@@ -1,0 +1,5 @@
+node_modules/
+.openai/*.log
+.openai/*.token
+.DS_Store
+*.zip
