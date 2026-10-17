@@ -139,7 +139,7 @@ test('Рабочее пространство: подборка, живой ра
  assert.equal(document.documentElement.dataset.concept,'classic','Выбор концепции восстанавливается после перезагрузки');
  assert.equal(document.querySelector('#offers-grid').dataset.layout,'list','Вид каталога восстанавливается после перезагрузки');
  assert.ok(document.querySelector('.service-hero'),'Старая настройка закрытой подсказки не скрывает новую композицию');
- assert.match(document.querySelector('h1').textContent,/Оптовая цена/);
+ assert.match(document.querySelector('.service-hero h1').textContent,/Оптовая цена/);
  const restored=JSON.parse(localStorage.getItem('optima-vtb-state-v1'));
  assert.equal(restored.orders[0].status,'cancelled');assert.equal(restored.needs.length,4,'Настройка интерфейса не удаляет потребности');
  reloaded.window.close();
