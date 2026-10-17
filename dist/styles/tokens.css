@@ -5,8 +5,8 @@
 /* Primary colours and motion scale derived from Admiral 3. MIT notice is included. */
 :root{
  --blue:#0062ff;--blue-hover:#0046e2;--blue-soft:#ebf3ff;--navy:#1b284a;--navy-deep:#121e3b;
- --text:#202b41;--muted:#5c6c84;--subtle:#69788d;--line:#e4e9f0;--bg:#f5f7fa;
- --green:#087b55;--green-soft:#e8f6ee;--radius:16px;--sidebar:104px;
+ --text:#24364f;--muted:#5d6d85;--subtle:#60728b;--line:#e2e8f0;--bg:#f5f7fa;
+ --green:#087b55;--green-soft:#e8f6ee;--radius:15px;--sidebar:216px;
  --space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--space-10:40px;
  --motion-short:150ms;--motion-standard:250ms;--motion-panel:350ms;--ease:cubic-bezier(.05,.6,.2,1);--ease-out:cubic-bezier(0,0,.2,1);
  --font:'Golos Text','Segoe UI',Arial,sans-serif;
