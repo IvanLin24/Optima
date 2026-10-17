@@ -7,7 +7,7 @@ import {renderExchange,renderExchangeRows,renderExchangeFocus,renderExchangeOrde
 const $=s=>document.querySelector(s);
 const THEME_KEY='optima-vtb-theme-v1';
 const THEME_LABELS={dark:'Тёмная',light:'Светлая',system:'Системная'};
-let themeMode=(()=>{try{const saved=localStorage.getItem(THEME_KEY);return Object.hasOwn(THEME_LABELS,saved)?saved:'light';}catch{return 'light';}})();
+let themeMode=(()=>{try{const saved=localStorage.getItem(THEME_KEY);return Object.hasOwn(THEME_LABELS,saved)?saved:'dark';}catch{return 'dark';}})();
 function setTheme(mode=themeMode,persist=false){
  if(!Object.hasOwn(THEME_LABELS,mode))return;
  themeMode=mode;

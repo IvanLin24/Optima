@@ -1,35 +1,66 @@
-/* Procurement workspace. All monetary values come from the shared domain model. */
+/* OPTIMA / BANKING WORKSPACE. Distinct composition; shared finance and actions. */
 const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function renderExchangeRows(m){
- if(!m.rows.length)return `<div class="x-empty"><span>${m.icon('search')}</span><strong>Подходящих предложений пока нет</strong><p>Измените поиск или добавьте потребность. Она сохранится в вашем списке.</p><button data-action="clear-filter">Сбросить фильтры</button></div>`;
- return m.rows.map(o=>{
- const c=m.calculate(o),active=m.selectedId===o.id,joined=m.joinedFor(o.id),matched=m.matched.has(o.id);
- return `<article class="x-row opportunity-row ${active?'selected':''}">
- <button class="x-row-main" data-action="select-offer" data-id="${o.id}" aria-pressed="${active}" aria-label="Рассчитать ${safe(o.name)}. ${m.money(c.groupTotal)} за ${m.number(o.quantity)} ${safe(o.unit)}, с доставкой">
- <span class="x-row-head"><span class="x-row-art" style="--product-tint:${o.accent}">${m.product(o.kind)}</span><span class="x-row-name"><span class="x-product-label">${safe(o.category)}</span><strong>${safe(o.name)}</strong><small>${safe(o.spec)}</small><em>${safe(o.supplier)}</em></span></span>
- <span class="x-row-finance"><span class="x-row-price"><strong>${m.money(c.groupTotal)}</strong><small>за ${m.number(o.quantity)} ${safe(o.unit)} с доставкой</small></span><span class="x-row-saving">−${m.money(c.saving)}<small>к отдельной закупке</small></span></span>
- <span class="x-row-bottom"><span class="x-row-progress"><span class="x-mini-meter"><i style="width:${Math.min(100,o.otherQuantity/o.threshold*100)}%"></i></span><small>${Math.round(o.otherQuantity/o.threshold*100)}% собрано · до ${m.date(o.deadline)}</small></span><span class="proposal-cta x-row-arrow">${m.icon(active?'check':'arrow','sm')}</span></span>
- ${joined?'<span class="x-match-label joined">Вы участвуете</span>':matched?'<span class="x-match-label">По вашей потребности</span>':''}
- </button><button class="x-row-fav ${m.favorites.includes(o.id)?'active':''}" data-action="favorite" data-id="${o.id}" aria-pressed="${m.favorites.includes(o.id)}" aria-label="${m.favorites.includes(o.id)?'Убрать из избранного':'В избранное'}: ${safe(o.name)}">${m.icon('heart','sm')}</button></article>`;
+ if(!m.rows.length)return `<div class="x-empty" role="status"><div class="x-empty-art">${m.icon('search')}</div><strong>Не нашли подходящих предложений</strong><p>Измените параметры или сохраните новую потребность: её можно будет сопоставить с закупками.</p><button data-action="clear-filter">Сбросить параметры ${m.icon('arrow','sm')}</button></div>`;
+ return m.rows.map((o,i)=>{
+  const c=m.calculate(o),active=m.selectedId===o.id,joined=m.joinedFor(o.id),matched=m.matched.has(o.id);
+  const progress=Math.min(100,Math.round(o.otherQuantity/o.threshold*100));
+  return `<article class="x-row opportunity-row ${active?'selected':''}" data-offer-id="${o.id}">
+ <button class="x-row-main" data-action="select-offer" data-id="${o.id}" aria-pressed="${active}" aria-label="${o.name}. Цена ${m.money(c.groupTotal)}, экономия ${m.money(c.saving)}. Открыть расчёт">
+ <span class="x-row-head"><span class="x-row-art">${m.product(o.kind)}</span><span class="x-row-name"><span class="x-product-label">${safe(o.sku)} / ${safe(o.category)}</span><strong>${safe(o.name)}</strong><small>${safe(o.spec)}</small><em>${safe(o.supplier)}</em></span></span>
+ <span class="x-row-volume"><span class="x-row-meter"><i style="width:${progress}%"></i></span><strong>${progress}%</strong><small>Группа: ${m.number(o.otherQuantity)} / ${m.number(o.threshold)} ${safe(o.unit)}</small></span>
+ <span class="x-row-finance"><strong>${m.money(c.groupTotal)}</strong><span>−${m.money(c.saving)}</span><small>Экономия при наборе группы</small></span>
+ <span class="proposal-cta x-row-arrow">${m.icon(active?'check':'arrow','sm')}</span>
+ </button>
+ <button class="x-row-fav ${m.favorites.includes(o.id)?'active':''}" data-action="favorite" data-id="${o.id}" aria-pressed="${m.favorites.includes(o.id)}" aria-label="${m.favorites.includes(o.id)?'Убрать из избранного':'Добавить в избранное'}: ${safe(o.name)}">${m.icon('heart','sm')}</button>
+ ${joined?'<span class="x-match-label joined">Участвуете</span>':matched?'<span class="x-match-label">Подходит вам</span>':''}
+ </article>`;
  }).join('');
 }
 export function renderExchangeFocus(m){
- const o=m.selected;if(!o)return '';
- const joined=m.joinedFor(o.id),q=joined?.quantity||m.quantity,c=joined?.calculation||m.calculate(o,q);
- const base=Math.min(100,o.otherQuantity/o.threshold*100),own=Math.max(0,Math.min(100-base,q/o.threshold*100));
- return `<div class="x-focus-product"><span class="x-selection-label">Выбранное предложение</span><h2>${safe(o.name)}</h2><p>${safe(o.spec)}</p><div class="x-supplier"><span>${safe(o.supplierInitial)}</span><div><strong>${safe(o.supplier)}</strong><small>Поставщик · Москва и область</small></div></div></div>
- <div class="x-demand" id="group-brief"><div class="x-demand-line"><span>Объём группы с вашим заказом</span><strong>${Math.round(c.progress)}%</strong></div><div class="x-volume-track" role="progressbar" aria-label="Объём группы с вашим заказом" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(c.progress)}"><span style="width:${base}%"></span><span style="width:${own}%"></span></div><div class="x-demand-value"><strong>${m.number(c.totalQuantity)} <span>из ${m.number(o.threshold)} ${safe(o.unit)}</span></strong></div><p class="x-demand-bottom">${c.ready?'Вашего объёма достаточно для оптовой цены':'Не хватает '+m.number(c.missing)+' '+safe(o.unit)+' до оптовой цены'}</p></div>`;
+ const o=m.selected;
+ if(!o)return '<div class="x-no-selection">Выберите предложение в списке, чтобы открыть условия участия.</div>';
+ const order=m.joinedFor(o.id),qty=order?.quantity||m.quantity,c=order?.calculation||m.calculate(o,qty);
+ const pct=Math.round(c.progress),base=Math.min(100,o.otherQuantity/o.threshold*100),own=Math.max(0,Math.min(100-base,qty/o.threshold*100));
+ const circle=2*Math.PI*62;
+ return `<div class="x-focus-product">
+   <div class="x-focus-head"><span class="x-detail-label">ВЫБРАННОЕ ПРЕДЛОЖЕНИЕ</span><span class="x-focus-sku">${safe(o.sku)}</span></div>
+   <div class="x-product-info"><span class="x-category">${safe(o.category)}</span><h2>${safe(o.name)}</h2><p>${safe(o.spec)}</p><span class="x-supplier">${m.icon('briefcase','sm')}${safe(o.supplier)}</span></div>
+ </div>
+ <div class="x-demand" id="group-brief">
+  <div class="x-demand-head"><div><small>ОБЪЕДИНЁННЫЙ СПРОС</small><h3>До оптовой цены</h3></div><span class="${c.ready?'x-state-ready':'x-state-collecting'}">${c.ready?'Порог достигнут':'Идёт сбор'}</span></div>
+  <div class="x-demand-diagram">
+   <div class="x-ring" aria-hidden="true"><svg viewBox="0 0 160 160"><circle class="x-ring-back" cx="80" cy="80" r="62"/><circle class="x-ring-fill" cx="80" cy="80" r="62" stroke-dasharray="${(pct/100*circle).toFixed(2)} ${circle.toFixed(2)}" transform="rotate(-90 80 80)"/><path class="x-ring-mark" d="M80 6v9 M80 145v9 M6 80h9 M145 80h9"/></svg><div class="x-ring-label"><strong>${pct}%</strong><small>ОБЪЁМА</small></div></div>
+   <div class="x-pool-numbers"><div><small>Собрано с вами</small><strong>${m.number(c.totalQuantity)} <span>${safe(o.unit)}</span></strong></div><div><small>Необходимый объём</small><strong>${m.number(o.threshold)} <span>${safe(o.unit)}</span></strong></div><div class="x-pool-message">${c.ready?m.icon('check','sm'):m.icon('clock','sm')}<span>${c.ready?'Ваш объём позволяет достичь порога':'Не хватает '+m.number(c.missing)+' '+safe(o.unit)}</span></div></div>
+  </div>
+  <div class="x-demand-foot"><div class="x-contribution"><span><i class="x-contrib-other"></i>Другие компании</span><strong>${m.number(o.otherQuantity)} ${safe(o.unit)}</strong></div><div class="x-contribution"><span><i class="x-contrib-yours"></i>Ваш объём</span><strong>${m.number(qty)} ${safe(o.unit)}</strong></div><div class="x-demand-meter" aria-label="Объём группы с вашим заказом" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${base}%"></i><i style="width:${own}%"></i></div></div>
+ </div>`;
 }
 export function renderExchange(m){
- return `<div class="exchange-scene"><header class="x-page-heading"><div><span class="x-overline">Совместные закупки</span><h1>Предложения для вас</h1><p>Нужный объём. Оптовая цена. Ваш отдельный заказ.</p></div><button class="x-add-button" data-action="new-need">${m.icon('plus','sm')} Добавить потребность</button></header>
- <section class="x-context" aria-label="Подбор предложений"><div class="x-context-icon">${m.icon('file')}</div><div><strong>От ваших потребностей — к выгодной закупке</strong><p>Есть совпадения по ${m.matched.size} позициям. Загрузите список, чтобы подобрать остальные.</p></div><button data-action="upload">Загрузить список ${m.icon('upload','sm')}</button></section>
- <section class="x-desk" id="catalog-start" aria-label="Предложения и расчёт"><div class="x-market"><div class="x-market-tabs"><div id="scope-tabs" class="scope-tabs" role="group" aria-label="Подборка предложений">${m.scopes()}</div><span class="x-result-count" id="offers-count" aria-live="polite">${m.rows.length}</span></div>
- <div class="x-controls"><label class="x-search">${m.icon('search','sm')}<input id="offer-search" type="search" placeholder="Товар или поставщик" aria-label="Найти товар" value="${safe(m.query)}"><kbd>/</kbd></label><label class="x-select"><span class="sr-only">Категория товаров</span><select id="category" aria-label="Категория товаров">${['Все','Упаковка','Для офиса','Хозтовары'].map(cat=>`<option value="${cat}" ${m.category===cat?'selected':''}>${cat==='Все'?'Все категории':cat}</option>`).join('')}</select>${m.icon('down','sm')}</label></div>
- <div class="x-list-caption"><span>Цена за указанный объём, с доставкой</span><label>${m.icon('sort','sm')}<select id="sort" aria-label="Сортировка"><option value="saving" ${m.sort==='saving'?'selected':''}>По выгоде</option><option value="deadline" ${m.sort==='deadline'?'selected':''}>По сроку сбора</option><option value="ready" ${m.sort==='ready'?'selected':''}>По готовности</option></select></label></div>
- <div class="x-rows" id="offers-grid" data-layout="exchange">${renderExchangeRows(m)}</div><div class="x-market-tail"><span>Не нашли нужный товар?</span><button data-action="new-need">Добавить потребность ${m.icon('arrow','sm')}</button></div></div>
- <div class="x-right"><div id="exchange-focus">${renderExchangeFocus(m)}</div><aside class="quote-panel x-quote" id="purchase-preview" data-offer-id="${m.selectedId||''}" aria-label="Расчёт выбранной закупки">${m.quote()}</aside></div></section></div>`;
+ const potential=m.OFFERS.reduce((n,o)=>n+m.calculate(o).saving,0),active=m.activeOrders.length;
+ return `<div class="exchange-scene">
+  <div class="x-location"><span class="x-location-root">Бизнес / Сервисы</span><span class="x-location-sep">/</span><strong>Совместные закупки</strong><span class="x-demo-label">ДЕМО-ПРОТОТИП</span></div>
+  <header class="x-page-heading"><div class="x-title-block"><span class="x-overline">ОПТИМА / ФИНАНСОВЫЕ ИНСТРУМЕНТЫ</span><h1>Совместные закупки<span class="x-head-dot">.</span></h1><p>Объединяйте объёмы, сохраняйте независимость заказа.</p></div><div class="x-header-actions"><button class="x-upload-button" data-action="upload">${m.icon('upload','sm')} Загрузить список</button><button class="x-add-button" data-action="new-need">${m.icon('plus','sm')} Новая потребность</button></div></header>
+  <section class="x-insights" aria-label="Сводка закупок">
+   <div class="x-insight x-insight-lead"><span>ДОСТУПНО В КАТАЛОГЕ</span><div><strong>${String(m.OFFERS.length).padStart(2,'0')}</strong><small>предложений поставщиков</small></div></div>
+   <div class="x-insight"><span>ПОТЕНЦИАЛ ЭКОНОМИИ</span><div><strong>${m.money(potential)}</strong><small>для демонстрационных объёмов</small></div></div>
+   <div class="x-insight"><span>СОВПАДЕНИЯ ПО СПРОСУ</span><div><strong>${String(m.matched.size).padStart(2,'0')}</strong><small>подходящих позиций</small></div></div>
+   <div class="x-insight x-insight-last"><span>ВАШЕ УЧАСТИЕ</span><div><strong>${String(active).padStart(2,'0')}</strong><small>${active?'активных заявок':'пока нет заявок'}</small></div></div>
+  </section>
+  <div class="x-space-heading"><div><span class="x-section-number">01 / РАБОЧЕЕ ПРОСТРАНСТВО</span><h2>Предложения поставщиков</h2></div><span class="x-space-note"><i></i>Актуальная демоподборка</span></div>
+  <section class="x-desk" id="catalog-start" aria-label="Каталог предложений и расчёт заказа">
+   <div class="x-market">
+    <div class="x-market-tabs"><div id="scope-tabs" class="scope-tabs" role="group" aria-label="Подборка предложений">${m.scopes()}</div><span class="x-result-count"><b id="offers-count">${m.rows.length}</b> поз.</span></div>
+    <div class="x-controls"><label class="x-search">${m.icon('search','sm')}<input id="offer-search" type="search" placeholder="Найти товар, поставщика или артикул" aria-label="Найти товар" value="${safe(m.query)}"><kbd>/</kbd></label><label class="x-select"><span class="sr-only">Категория товаров</span><select id="category" aria-label="Категория товаров">${['Все','Упаковка','Для офиса','Хозтовары'].map(cat=>`<option value="${cat}" ${m.category===cat?'selected':''}>${cat==='Все'?'Все категории':cat}</option>`).join('')}</select>${m.icon('down','sm')}</label><label class="x-select"><span class="sr-only">Сортировка</span><select id="sort" aria-label="Сортировка"><option value="saving" ${m.sort==='saving'?'selected':''}>По выгоде</option><option value="deadline" ${m.sort==='deadline'?'selected':''}>По сроку</option><option value="ready" ${m.sort==='ready'?'selected':''}>По готовности</option></select>${m.icon('down','sm')}</label></div>
+    <div class="x-table-head"><span>ПРЕДЛОЖЕНИЕ</span><span>ОБЪЁМ ГРУППЫ</span><span>ДЛЯ ВАШЕЙ КОМПАНИИ</span></div>
+    <div class="x-rows" id="offers-grid" data-layout="exchange">${renderExchangeRows(m)}</div>
+    <div class="x-market-tail"><span>Расчётные цены с доставкой. Условия действуют при наборе общего объёма.</span><button data-action="help">Как устроена закупка? ${m.icon('arrow','sm')}</button></div>
+   </div>
+   <div class="x-right"><div id="exchange-focus">${renderExchangeFocus(m)}</div><aside class="quote-panel x-quote" id="purchase-preview" data-offer-id="${m.selectedId||''}" aria-label="Расчёт выбранной закупки">${m.quote()}</aside></div>
+  </section>
+  <footer class="x-process"><span>КАК РАБОТАЕТ ОПТИМА</span><div><strong>01</strong><p>Выбираете предложение</p></div><div><strong>02</strong><p>Добавляете свой объём</p></div><div><strong>03</strong><p>Создаёте отдельную заявку</p></div><button data-action="help" aria-label="Подробнее о процессе закупки">${m.icon('arrow','sm')}</button></footer>
+  </div>`;
 }
-
 /* Remaining routes are independently composed Exchange workspaces. */
 export function renderExchangeOrders(m){
  const all=m.state.orders,shown=all.filter(o=>m.orderFilter==='all'||(m.orderFilter==='active'?o.status!=='cancelled':o.status==='cancelled'));
