@@ -22,7 +22,15 @@ test('Сценарий клиента: поиск, подбор, расчёт, �
  assert.deepEqual([...document.querySelectorAll('.side-nav [data-view]')].map(e=>e.dataset.view),['offers','orders','needs','analytics']);
  assertSection('offers');
  assert.equal(document.querySelectorAll('.offer-card').length,6);
- input('#offer-search','перчатки');assert.equal(document.querySelectorAll('.offer-card').length,1);
+ click('.widget-link');
+ assert.equal(document.querySelector('#quantity').value,'1000');
+ assert.match(document.querySelector('#detail-calculation').textContent,/3[\s\u00a0\u202f]*050/);
+ click('[data-action="close"]');
+ click('[data-action="mobile"]');assert.equal(document.querySelector('.mobile-menu').getAttribute('aria-expanded'),'true');
+ document.dispatchEvent(new window.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+ assert.equal(document.querySelector('.mobile-menu').getAttribute('aria-expanded'),'false');
+ assert.equal(document.querySelector('.sidebar.open'),null);
+ input('#offer-search','перчатки');assert.equal(document.querySelectorAll('.offer-card').length,1);assert.equal(document.querySelector('#offers-count').textContent,'1');
  input('#offer-search','несуществующий товар');assert.match(document.querySelector('#offers-grid').textContent,/пока нет/);
  input('#offer-search','');
  click('[data-action="offer"][data-id="bags"]');
@@ -30,7 +38,7 @@ test('Сценарий клиента: поиск, подбор, расчёт, �
  const first=document.querySelector('#detail-calculation').textContent;
  input('#quantity','2000');assert.notEqual(document.querySelector('#detail-calculation').textContent,first);
  assert.equal(document.querySelector('[data-action="review"]').disabled,true);
- click('#consent');assert.equal(document.querySelector('[data-action="review"]').disabled,false);input('#quantity','');assert.equal(document.querySelector('[data-action="review"]').disabled,true);input('#quantity','2000');assert.equal(document.querySelector('[data-action="review"]').disabled,false);
+ click('#consent');assert.equal(document.querySelector('[data-action="review"]').disabled,false);input('#quantity','');assert.equal(document.querySelector('[data-action="review"]').disabled,true);click('[data-action="quantity-up"]');assert.equal(document.querySelector('[data-action="review"]').disabled,false);input('#quantity','2000');assert.equal(document.querySelector('[data-action="review"]').disabled,false);
  click('[data-action="review"]');assert.match(document.querySelector('#overlay-root').textContent,/Подтверждение участия/);
  click('[data-action="confirm"]');assert.match(document.querySelector('#overlay-root').textContent,/Вы в закупке/);
  click('[data-action="success-orders"]');assertSection('orders');assert.equal(document.querySelectorAll('.order-card').length,1);
@@ -45,5 +53,7 @@ test('Сценарий клиента: поиск, подбор, расчёт, �
  click('[data-action="close"]');
  click('[data-view="analytics"]');assertSection('analytics');assert.equal(document.querySelectorAll('.chart-column').length,6);
  assert.equal(document.querySelectorAll('.calculation-table').length,0);
+ document.dispatchEvent(new window.KeyboardEvent('keydown',{key:'/',bubbles:true}));
+ assertSection('offers');assert.equal(document.activeElement.id,'offer-search');
  dom.window.close();
 });
