@@ -36,6 +36,12 @@ jobs:
           sleep 3
           "$CHROME_BIN" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3500 --window-size=1600,1030 --screenshot=visual-review/exchange-desktop.png http://127.0.0.1:4173/#offers
           "$CHROME_BIN" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3500 --window-size=410,900 --screenshot=visual-review/exchange-mobile.png http://127.0.0.1:4173/#offers
+          "$CHROME_BIN" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3500 --window-size=1600,1030 --screenshot=visual-review/exchange-orders.png http://127.0.0.1:4173/#orders
+          "$CHROME_BIN" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3500 --window-size=1600,1030 --screenshot=visual-review/exchange-needs.png http://127.0.0.1:4173/#needs
+          "$CHROME_BIN" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3500 --window-size=1600,1030 --screenshot=visual-review/exchange-analytics.png http://127.0.0.1:4173/#analytics
+          test -s visual-review/exchange-orders.png
+          test -s visual-review/exchange-needs.png
+          test -s visual-review/exchange-analytics.png
           test -s visual-review/exchange-desktop.png
           test -s visual-review/exchange-mobile.png
       - name: Upload screenshots
