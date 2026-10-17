@@ -123,7 +123,7 @@ test('Рабочее пространство: подборка, живой ра
  click('[data-action="scope"][data-scope="favorites"]');assert.equal(document.querySelectorAll('.x-row').length,1);
  click('[data-action="favorite"][data-id="bags"]');assert.equal(document.querySelectorAll('.x-row').length,0);assert.equal(document.querySelector('#quote-quantity'),null);
  click('[data-action="clear-filter"]');
- window.matchMedia=query=>({matches:query.includes('max-width:1179px')});
+ window.matchMedia=query=>({matches:query.includes('max-width:1320px')});
  click('[data-action="select-offer"][data-id="bags"]');assert.ok(document.querySelector('.drawer'),'На небольшом экране строка открывает условия');
  click('[data-action="close"]');
  const legacy=JSON.parse(localStorage.getItem('optima-vtb-state-v1'));
