@@ -7,15 +7,15 @@ export function renderShowcase(m){
   {id:'Упаковка',label:'Упаковка и логистика',copy:'Пакеты, этикетки, стрейч-плёнка',kind:'bag',code:'02'},
   {id:'Хозтовары',label:'Для ежедневной работы',copy:'Перчатки и хозяйственные товары',kind:'gloves',code:'03'}
  ];
- return \`<div class="s-front">
+ return `<div class="s-front">
  <div class="s-topline"><span>ВТБ <i>/</i> Бизнес <i>/</i> Сервисы</span><span>ОПТИМА <b>•</b> КОНЦЕПТ СЕРВИСА</span></div>
  <section class="s-hero" aria-label="Оптима — совместные закупки">
   <header class="x-page-heading s-hero-copy">
    <div class="s-hero-content"><span class="s-hero-label"><i></i> ФИНТЕХ-СЕРВИС ДЛЯ БИЗНЕСА</span>
     <h1>Масштаб<br>большого бизнеса.<br><span>Заказ — ваш.</span></h1>
     <p>Объединяйте закупки с другими компаниями и получайте оптовую цену. Заказывайте только то, что нужно именно вам.</p>
-    <div class="s-hero-actions"><button class="s-cta" data-action="browse-offers">Выбрать закупку <span>\${m.icon('arrow','sm')}</span></button><button class="s-cta-link" data-action="help">Как работает Оптима \${m.icon('arrow','sm')}</button></div>
-    <div class="s-hero-foot"><span>\${m.icon('shield','sm')} Отдельный заказ и документы</span><span>\${m.icon('users','sm')} Единый объём спроса</span></div>
+    <div class="s-hero-actions"><button class="s-cta" data-action="browse-offers">Выбрать закупку <span>${m.icon('arrow','sm')}</span></button><button class="s-cta-link" data-action="help">Как работает Оптима ${m.icon('arrow','sm')}</button></div>
+    <div class="s-hero-foot"><span>${m.icon('shield','sm')} Отдельный заказ и документы</span><span>${m.icon('users','sm')} Единый объём спроса</span></div>
    </div>
   </header>
   <div class="s-illustration" aria-label="Схема объединения заказов разных компаний в одну партию">
@@ -57,17 +57,17 @@ export function renderShowcase(m){
     <circle cx="510" cy="189" r="4" fill="#c0e7ff"/>
     <path d="M510 189 447 231" stroke="#c0e7ff" stroke-dasharray="5 9" stroke-width="2" opacity=".65"/>
    </svg>
-   <div class="s-figure-stat"><small>ПРИМЕР ОБЩЕЙ ПАРТИИ</small><strong>\${m.number(sample.threshold)}</strong><span>\${e(sample.unit)} <i>в единой закупке</i></span></div>
-   <div class="s-figure-pill"><span>ВАШ ЗАКАЗ</span><strong>\${m.number(sample.quantity)} \${e(sample.unit)}</strong></div>
+   <div class="s-figure-stat"><small>ПРИМЕР ОБЩЕЙ ПАРТИИ</small><strong>${m.number(sample.threshold)}</strong><span>${e(sample.unit)} <i>в единой закупке</i></span></div>
+   <div class="s-figure-pill"><span>ВАШ ЗАКАЗ</span><strong>${m.number(sample.quantity)} ${e(sample.unit)}</strong></div>
    <div class="s-illustration-bottom"><span><i></i> ОБЪЁМ ОБЪЕДИНЯЕТСЯ</span><span>ЗАКАЗЫ ОСТАЮТСЯ ОТДЕЛЬНЫМИ</span></div>
   </div>
  </section>
  <section class="s-directions" aria-label="Направления закупок">
   <div class="s-directions-top"><div><span>НАПРАВЛЕНИЯ</span><h2>Что закупают вместе</h2></div><p>Выберите категорию, чтобы сразу увидеть предложения поставщиков.</p></div>
-  <div class="s-category-grid">\${categories.map((cat,i)=>\`<button class="s-category" data-action="category-jump" data-category="\${e(cat.id)}" aria-label="\${e(cat.label)}: перейти к предложениям">
-   <span class="s-category-id">\${cat.code} <i>/\${m.number(m.OFFERS.filter(o=>o.category===cat.id).length)} предложения</i></span>
-   <span class="s-category-image s-category-image-\${i}">\${m.product(cat.kind)}</span>
-   <span class="s-category-bottom"><span><strong>\${e(cat.label)}</strong><small>\${e(cat.copy)}</small></span>\${m.icon('arrow','sm')}</span>
-  </button>\`).join('')}</div>
- </section></div>\`;
+  <div class="s-category-grid">${categories.map((cat,i)=>`<button class="s-category" data-action="category-jump" data-category="${e(cat.id)}" aria-label="${e(cat.label)}: перейти к предложениям">
+   <span class="s-category-id">${cat.code} <i>/${m.number(m.OFFERS.filter(o=>o.category===cat.id).length)} предложения</i></span>
+   <span class="s-category-image s-category-image-${i}">${m.product(cat.kind)}</span>
+   <span class="s-category-bottom"><span><strong>${e(cat.label)}</strong><small>${e(cat.copy)}</small></span>${m.icon('arrow','sm')}</span>
+  </button>`).join('')}</div>
+ </section></div>`;
 }
