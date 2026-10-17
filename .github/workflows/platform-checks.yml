@@ -1,0 +1,52 @@
+name: Optima Platform
+
+on:
+  push:
+    branches: [frontend]
+    paths:
+      - 'dist/workspace/**'
+      - 'dist/supplier/**'
+      - 'tests/platform-domain.test.mjs'
+      - '.github/workflows/platform-checks.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check scripts and domain behavior
+        run: |
+          node --check dist/workspace/app.js
+          node --check dist/workspace/model.js
+          node --check dist/workspace/api.js
+          node --check dist/workspace/store.js
+          node --test tests/platform-domain.test.mjs
+      - name: Check desktop and mobile rendering
+        run: |
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$CHROME"
+          mkdir -p platform-review
+          python3 -m http.server 4173 --directory dist >/tmp/optima-platform.log 2>&1 &
+          sleep 3
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3500 --window-size=1600,1000 --screenshot=platform-review/buyer-desktop.png http://127.0.0.1:4173/workspace/
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3500 --window-size=390,850 --screenshot=platform-review/buyer-mobile.png http://127.0.0.1:4173/workspace/
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3500 --window-size=1500,950 --screenshot=platform-review/supplier-desktop.png http://127.0.0.1:4173/supplier/
+          test -s platform-review/buyer-desktop.png
+          test -s platform-review/buyer-mobile.png
+          test -s platform-review/supplier-desktop.png
+      - name: Upload visual previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: optima-platform-browser-review
+          path: platform-review/*.png
+          if-no-files-found: warn
+          retention-days: 7
