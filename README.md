@@ -20,7 +20,7 @@ py -3 run_local.py
 При первом скачивании:
 
 ```powershell
-git clone --branch optima-vtb-frontend --single-branch https://github.com/IvanLin24/Optima.git "$env:USERPROFILE\Optima-Git"
+git clone --branch frontend --single-branch https://github.com/IvanLin24/Optima.git "$env:USERPROFILE\Optima-Git"
 cd "$env:USERPROFILE\Optima-Git"
 py -3 run_local.py
 ```
@@ -113,6 +113,7 @@ npm run check
 ## Ветки и история
 
 - `main` — актуальный проверенный срез проекта, который открывается на главной странице репозитория.
-- `optima-vtb-frontend` — рабочая ветка фронтенда. Существующая локальная копия продолжает получать изменения из неё.
+- `frontend` — рабочая ветка интерфейса.
+- `backend` — рабочая ветка серверной части.
 - Сообщения коммитов пишем на русском. Небольшие изменения сохраняем обычными коммитами; номера версий используем для согласованных крупных этапов.
 - История сохраняется. Опубликованные изменения отменяем отдельным коммитом без переписывания истории.
