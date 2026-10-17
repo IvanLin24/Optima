@@ -1,7 +1,7 @@
 /* OPTIMA / BANKING WORKSPACE. Distinct composition; shared finance and actions. */
 const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function renderExchangeRows(m){
- if(!m.rows.length)return `<div class="x-empty" role="status"><div class="x-empty-art">${m.icon('search')}</div><strong>Не нашли подходящих предложений</strong><p>Измените параметры или сохраните новую потребность: её можно будет сопоставить с закупками.</p><button data-action="clear-filter">Сбросить параметры ${m.icon('arrow','sm')}</button></div>`;
+ if(!m.rows.length)return `<div class="x-empty" role="status"><div class="x-empty-art">${m.icon('search')}</div><strong>Подходящих предложений пока нет</strong><p>Измените параметры или сохраните новую потребность: её можно будет сопоставить с закупками.</p><button data-action="clear-filter">Сбросить параметры ${m.icon('arrow','sm')}</button></div>`;
  return m.rows.map((o,i)=>{
   const c=m.calculate(o),active=m.selectedId===o.id,joined=m.joinedFor(o.id),matched=m.matched.has(o.id);
   const progress=Math.min(100,Math.round(o.otherQuantity/o.threshold*100));
@@ -24,7 +24,7 @@ export function renderExchangeFocus(m){
  const pct=Math.round(c.progress),base=Math.min(100,o.otherQuantity/o.threshold*100),own=Math.max(0,Math.min(100-base,qty/o.threshold*100));
  const circle=2*Math.PI*62;
  return `<div class="x-focus-product">
-   <div class="x-focus-head"><span class="x-detail-label">ВЫБРАННОЕ ПРЕДЛОЖЕНИЕ</span><span class="x-focus-sku">${safe(o.sku)}</span></div>
+   <div class="x-focus-head"><span class="x-detail-label">ВЫБРАННОЕ ПРЕДЛОЖЕНИЕ</span><button class="x-focus-shortcut" data-action="${order?'open-existing':'quote-open'}" ${order?`data-id="${o.id}"`:''} aria-label="Перейти к условиям выбранной закупки">К условиям ${m.icon('arrow','sm')}</button></div>
    <div class="x-product-info"><span class="x-category">${safe(o.category)}</span><h2>${safe(o.name)}</h2><p>${safe(o.spec)}</p><span class="x-supplier">${m.icon('briefcase','sm')}${safe(o.supplier)}</span></div>
  </div>
  <div class="x-demand" id="group-brief">

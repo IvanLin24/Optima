@@ -278,3 +278,44 @@
  .x-row-name small{font-size:10px}
 }
 @media(prefers-reduced-motion:reduce){.x-row,.x-row-fav,.x-side-link{transition:none}}
+
+/* Visual QA 1: shorter initial viewport, visible deal action, route consistency. */
+.x-insights{margin-bottom:30px}
+.x-insight{padding-top:15px;padding-bottom:16px}
+.x-insight>div{margin-top:9px}
+.x-space-heading{margin-bottom:14px}
+.x-focus-shortcut{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;padding:4px 0;background:none;color:var(--ex-brand);font-size:11px;font-weight:700}
+.x-focus-shortcut .icon{width:14px;height:14px}
+.x-focus-shortcut:hover{text-decoration:underline;text-underline-offset:3px}
+.x-demand{padding-top:9px;padding-bottom:11px}
+.x-demand-diagram{grid-template-columns:95px 1fr;gap:11px;margin-top:7px}
+.x-ring{width:90px;height:90px}
+.x-ring-label strong{font-size:24px}
+.x-pool-numbers{gap:6px}
+.x-demand-foot{margin-top:6px}
+.x-focus-product{padding-top:17px;padding-bottom:8px}
+.x-supplier{margin-top:7px}
+.x-space-heading h2{font-weight:700}
+:root[data-concept="exchange"] .x-section-action{background:#1868e8;color:#fff;border:1px solid #1868e8;border-radius:6px;min-height:44px;white-space:nowrap;padding:10px 17px;font-size:12px;font-weight:700;box-shadow:none}
+:root[data-concept="exchange"] .x-section-action:hover{background:#0752c8;color:#fff}
+:root[data-concept="exchange"] .x-secondary-action{background:var(--ex-panel);color:var(--ex-ink);border:1px solid var(--ex-border-strong);min-height:44px;padding:10px 14px;border-radius:6px;font-size:12px;font-weight:600}
+:root[data-concept="exchange"] .x-analytics-summary{background:transparent;border-radius:0;border-top:1px solid var(--ex-line);border-bottom:1px solid var(--ex-line);padding:28px 0}
+:root[data-concept="exchange"] .x-breakdown{background:transparent;border-radius:0;padding:19px 0;border:0}
+:root[data-concept="exchange"] .x-breakdown+.x-breakdown{border-left:1px solid var(--ex-line);padding-left:30px}
+:root[data-concept="exchange"] .x-ledger-summary{background:transparent;border-radius:0;border-top:1px solid var(--ex-line);border-bottom:1px solid var(--ex-line)}
+:root[data-concept="exchange"] .x-ledger{border-radius:6px}
+@media(max-width:700px){
+ .x-location{display:none}
+ .x-overline{font-size:9px}
+ .x-page-heading{margin-bottom:15px}
+ .x-insights{margin-bottom:22px}
+ .x-insight:nth-child(3),.x-insight:nth-child(4){display:none}
+ .x-insight:nth-child(1),.x-insight:nth-child(2){border-top:0}
+ .x-insight{padding-top:12px;padding-bottom:13px}
+ .x-insight strong{font-size:27px}
+ .x-section-number{font-size:9px}
+ .x-market-tabs{margin-bottom:12px}
+ .x-market .scope-tab{height:37px;min-height:0;padding-bottom:9px}
+ .x-process{margin-top:28px}
+ :root[data-concept="exchange"] .x-breakdown+.x-breakdown{border-left:0;border-top:1px solid var(--ex-line);padding-left:0}
+}
