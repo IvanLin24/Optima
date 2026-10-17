@@ -1,4 +1,5 @@
 /* OPTIMA / BANKING WORKSPACE. Distinct composition; shared finance and actions. */
+import {renderShowcase} from './showcase.js';
 const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function renderExchangeRows(m){
  if(!m.rows.length)return `<div class="x-empty" role="status"><div class="x-empty-art">${m.icon('search')}</div><strong>Подходящих предложений пока нет</strong><p>Измените параметры или сохраните новую потребность: её можно будет сопоставить с закупками.</p><button data-action="clear-filter">Сбросить параметры ${m.icon('arrow','sm')}</button></div>`;
@@ -40,15 +41,7 @@ export function renderExchangeFocus(m){
 }
 export function renderExchange(m){
  const potential=m.OFFERS.reduce((n,o)=>n+m.calculate(o).saving,0),active=m.activeOrders.length;
- return `<div class="exchange-scene">
-  <div class="x-location"><span class="x-location-root">Бизнес / Сервисы</span><span class="x-location-sep">/</span><strong>Совместные закупки</strong><span class="x-demo-label">ДЕМО-ПРОТОТИП</span></div>
-  <header class="x-page-heading"><div class="x-title-block"><span class="x-overline">ОПТИМА / ФИНАНСОВЫЕ ИНСТРУМЕНТЫ</span><h1>Совместные закупки<span class="x-head-dot">.</span></h1><p>Объединяйте объёмы, сохраняйте независимость заказа.</p></div><div class="x-header-actions"><button class="x-upload-button" data-action="upload">${m.icon('upload','sm')} Загрузить список</button><button class="x-add-button" data-action="new-need">${m.icon('plus','sm')} Новая потребность</button></div></header>
-  <section class="x-insights" aria-label="Сводка закупок">
-   <div class="x-insight x-insight-lead"><span>ДОСТУПНО В КАТАЛОГЕ</span><div><strong>${String(m.OFFERS.length).padStart(2,'0')}</strong><small>предложений поставщиков</small></div></div>
-   <div class="x-insight"><span>ПОТЕНЦИАЛ ЭКОНОМИИ</span><div><strong>${m.money(potential)}</strong><small>для демонстрационных объёмов</small></div></div>
-   <div class="x-insight"><span>СОВПАДЕНИЯ ПО СПРОСУ</span><div><strong>${String(m.matched.size).padStart(2,'0')}</strong><small>подходящих позиций</small></div></div>
-   <div class="x-insight x-insight-last"><span>ВАШЕ УЧАСТИЕ</span><div><strong>${String(active).padStart(2,'0')}</strong><small>${active?'активных заявок':'пока нет заявок'}</small></div></div>
-  </section>
+ return `<div class="exchange-scene">${renderShowcase(m)}
   <div class="x-space-heading"><div><span class="x-section-number">01 / РАБОЧЕЕ ПРОСТРАНСТВО</span><h2>Предложения поставщиков</h2></div><span class="x-space-note"><i></i>Актуальная демоподборка</span></div>
   <section class="x-desk" id="catalog-start" aria-label="Каталог предложений и расчёт заказа">
    <div class="x-market">

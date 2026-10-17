@@ -28,6 +28,12 @@ test('Рабочее пространство: подборка, живой ра
  assertSection('offers');
  assert.equal(document.documentElement.dataset.concept,'exchange','Новый режим по умолчанию');
  assert.ok(document.querySelector('.exchange-scene'),'Независимая DOM-композиция');
+ assert.ok(document.querySelector('.s-hero'),'Брендовый экран — отдельная сцена');
+ assert.equal(document.querySelectorAll('.s-category').length,3,'Выбор направлений закупки');
+ click('.s-category[data-category="Упаковка"]');
+ assert.equal(document.querySelectorAll('.x-row').length,3,'Витрина фильтрует товары по категории');
+ assert.equal(document.querySelector('#category').value,'Упаковка');
+ change('#category','Все');
  assert.equal(document.querySelectorAll('.x-row').length,6);
  click('.x-side-link[data-view="orders"]');
  assert.ok(document.querySelector('.x-records'),'Exchange: самостоятельный журнал заявок');
@@ -136,7 +142,7 @@ test('Рабочее пространство: подборка, живой ра
  assert.equal(document.documentElement.dataset.theme,'dark','Выбор темы восстанавливается после перезагрузки');
  assert.equal(document.documentElement.dataset.concept,'exchange');
  assert.equal(document.querySelector('#offers-grid').dataset.layout,'exchange');
- assert.match(document.querySelector('.x-page-heading h1').textContent,/Совместные закупки/);
+ assert.match(document.querySelector('.x-page-heading h1').textContent,/Масштаб/);
  const restored=JSON.parse(localStorage.getItem('optima-vtb-state-v1'));
  assert.equal(restored.orders[0].status,'cancelled');assert.equal(restored.needs.length,4,'Настройка интерфейса не удаляет потребности');
  click('.x-side-link[data-view="orders"]');
