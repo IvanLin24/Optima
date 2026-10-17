@@ -24,7 +24,7 @@ export function renderExchangeFocus(m){
  const base=Math.min(100,o.otherQuantity/o.threshold*100),own=Math.max(0,Math.min(100-base,q/o.threshold*100));
  return `<div class="x-focus-meta"><span class="x-index">02 / ПРЕДЛОЖЕНИЕ</span><span>${safe(o.sku)}</span></div>
  <div class="x-focus-product"><div class="x-focus-art">${m.product(o.kind)}</div>
- <div class="x-focus-copy"><span>${safe(o.category)}</span><h2>${safe(o.name)}</h2><p>${safe(o.spec)}</p><small>${safe(o.supplier)} · Сбор до ${m.date(o.deadline)}</small></div></div>
+ <div class="x-focus-copy"><span>${safe(o.category)}</span><h2>${safe(o.name)}</h2><p>${safe(o.spec)}</p><small>${safe(o.supplier)} · Сбор до ${m.date(o.deadline)}</small><div class="x-focus-finance"><strong>${m.money(c.groupTotal)}</strong><span>Выгода ${m.money(c.saving)}</span></div></div></div>
  <div class="x-demand" id="group-brief">
   <div class="x-demand-line"><span>СОВМЕСТНЫЙ ОБЪЁМ</span><strong>${c.ready?'Порог набран':'Сбор продолжается'}</strong></div>
   <div class="x-demand-value"><strong>${m.number(c.totalQuantity)}</strong><span>/ ${m.number(o.threshold)} ${safe(o.unit)}</span><em>${Math.round(c.progress)}%</em></div>
