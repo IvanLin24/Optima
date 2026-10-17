@@ -1,0 +1,48 @@
+name: Exchange visual review
+
+on:
+  push:
+    branches:
+      - frontend
+    paths:
+      - 'dist/**'
+      - '.github/workflows/visual-review.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Identify browser
+        run: |
+          for executable in google-chrome google-chrome-stable chromium chromium-browser; do
+            if command -v "$executable" >/dev/null 2>&1; then
+              echo "CHROME_BIN=$(command -v "$executable")" >> "$GITHUB_ENV"
+              echo "Found $executable"
+              exit 0
+            fi
+          done
+          echo "No supported browser found"
+          exit 1
+      - name: Run static server and capture two screen sizes
+        run: |
+          mkdir -p visual-review
+          python3 -m http.server 4173 --directory dist > /tmp/optima-http.log 2>&1 &
+          sleep 3
+          "$CHROME_BIN" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3500 --window-size=1600,1030 --screenshot=visual-review/exchange-desktop.png http://127.0.0.1:4173/#offers
+          "$CHROME_BIN" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3500 --window-size=410,900 --screenshot=visual-review/exchange-mobile.png http://127.0.0.1:4173/#offers
+          test -s visual-review/exchange-desktop.png
+          test -s visual-review/exchange-mobile.png
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: optima-exchange-screenshots
+          path: visual-review/*.png
+          if-no-files-found: warn
+          retention-days: 7
