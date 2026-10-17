@@ -1,0 +1,49 @@
+name: Optima Next frontend
+
+on:
+  push:
+    branches: [frontend]
+    paths:
+      - 'dist/next/**'
+      - 'tests/next-domain.test.mjs'
+      - '.github/workflows/next-frontend.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and unit tests
+        run: |
+          node --check dist/next/app.js
+          node --check dist/next/api.js
+          node --check dist/next/domain.js
+          node --check dist/next/mock-api.js
+          node --test tests/next-domain.test.mjs
+      - name: Browser screenshots
+        run: |
+          mkdir -p next-preview
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$CHROME"
+          python3 -m http.server 4173 --directory dist >/tmp/next-server.log 2>&1 &
+          sleep 3
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=4000 --window-size=1600,1000 --screenshot=next-preview/desktop.png http://127.0.0.1:4173/next/
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=4000 --window-size=420,900 --screenshot=next-preview/mobile.png http://127.0.0.1:4173/next/
+          test -s next-preview/desktop.png
+          test -s next-preview/mobile.png
+      - name: Upload previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: optima-next-screenshots
+          path: next-preview/*.png
+          if-no-files-found: warn
+          retention-days: 7

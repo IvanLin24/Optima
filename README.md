@@ -1,5 +1,20 @@
 # Оптима. Фронтенд совместных закупок
 
+## Optima Next — новый самостоятельный фронтенд
+
+**Основная версия для тестирования теперь Optima Next.** Запуск `py -3 run_local.py` открывает `http://127.0.0.1:4173/next/`. Новый UI полностью отделён от старого кода, все исходники доступны по пути `dist/next/`.
+
+Для обновления на Windows:
+
+```powershell
+cd C:\Users\ivanl\Optima-Git
+git -c http.version=HTTP/1.1 pull --ff-only origin frontend
+py -3 run_local.py
+```
+
+Прежний интерфейс сохранён и доступен вручную по `http://127.0.0.1:4173/#offers`. Публичная витрина: `http://127.0.0.1:4173/site/`. Код Optima Next: `dist/next/`, проверки: `node --test tests/next-domain.test.mjs`, контракт бэкенда: `docs/NEXT-BACKEND-CONTRACT.md`, руководство: `docs/NEXT-FRONTEND.md`.
+
+
 ## Новый публичный продуктовый сайт
 
 **Публичная витрина Оптима** теперь существует отдельно от рабочего приложения:
