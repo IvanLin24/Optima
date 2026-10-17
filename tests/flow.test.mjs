@@ -35,7 +35,7 @@ test('Рабочее пространство: подборка, живой ра
  input('#quote-quantity','2000');
  assert.equal(digits('#quote-total'),'5850');
  assert.match(document.querySelector('.x-focus-finance').textContent,/5[\s\u00a0\u202f]*850/);
- assert.match(document.querySelector('#exchange-focus'.textContent,/11[\s\u00a0\u202f]*000/);
+ assert.match(document.querySelector('#exchange-focus').textContent,/11[\s\u00a0\u202f]*000/);
  input('#offer-search','перчатки');
  assert.equal(document.querySelectorAll('.x-row').length,1);
  assert.equal(document.querySelector('#purchase-preview').dataset.offerId,'gloves');
