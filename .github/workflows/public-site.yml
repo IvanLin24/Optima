@@ -36,9 +36,14 @@ jobs:
           sleep 3
           "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=2500 --window-size=1600,1000 --screenshot=public-review/desktop.png http://127.0.0.1:4173/site/
           "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=2500 --window-size=440,930 --screenshot=public-review/mobile.png http://127.0.0.1:4173/site/
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3000 --window-size=1600,5800 --screenshot=public-review/full-desktop.png http://127.0.0.1:4173/site/
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=3000 --window-size=440,8000 --screenshot=public-review/full-mobile.png http://127.0.0.1:4173/site/
+          test -s public-review/full-desktop.png
+          test -s public-review/full-mobile.png
           test -s public-review/desktop.png
           test -s public-review/mobile.png
           "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --virtual-time-budget=2500 --dump-dom http://127.0.0.1:4173/site/ > /tmp/site-rendered.html
+          grep -q 'data-calculator="ready"' /tmp/site-rendered.html
           grep -q '3 050' /tmp/site-rendered.html || grep -q '3&nbsp;050' /tmp/site-rendered.html || grep -q '3.050' /tmp/site-rendered.html || grep -q 'id="save"' /tmp/site-rendered.html
       - name: Upload previews
         if: always()

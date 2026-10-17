@@ -34,7 +34,7 @@ function renderCalc(){
 qty?.addEventListener('input',renderCalc);
 minus?.addEventListener('click',()=>{qty.value=Math.max(Number(qty.min),Number(qty.value)-100);renderCalc()});
 plus?.addEventListener('click',()=>{qty.value=Math.min(Number(qty.max),Number(qty.value)+100);renderCalc()});
-if(qty&&offer)renderCalc();
+if(qty&&offer){renderCalc();document.documentElement.dataset.calculator='ready';}
 
 const toggle=document.querySelector('.menu-toggle');
 const nav=document.querySelector('#site-nav');
