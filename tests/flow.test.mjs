@@ -48,7 +48,7 @@ test('Рабочее пространство: подборка, живой ра
  assert.equal(document.querySelector('#purchase-preview').dataset.offerId,'gloves');
  input('#offer-search','');
  assert.equal(document.querySelector('[data-action="concepts"]'),null,'Рабочий интерфейс не содержит переключателя экспериментов');
- assert.equal(document.documentElement.dataset.theme,'light');
+ assert.equal(document.documentElement.dataset.theme,'dark');
  click('[data-action="theme"]');
  click('[data-action="set-theme"][data-theme-option="light"]');
  assert.equal(document.documentElement.dataset.theme,'light');
