@@ -126,11 +126,11 @@ function selectOffer(id){
  for(const b of document.querySelectorAll('[data-action="select-offer"]')){const active=b.dataset.id===id;b.setAttribute('aria-pressed',String(active));b.closest('.opportunity-row').classList.toggle('selected',active);b.querySelector('.proposal-cta').innerHTML=icon(active?'check':'arrow','sm');}
  const panel=$('#purchase-preview');if(changed){panel.innerHTML=quoteView();panel.dataset.offerId=id;fitQuotePanel();}
  syncGroupBrief();
-  if(window.matchMedia?.('(max-width:1179px)').matches)openOffer(id,quoteQuantity);
+  if(window.matchMedia?.('(max-width:1320px)').matches)openOffer(id,quoteQuantity);
  else if(changed)enter($('#purchase-preview .quote-scroll'),6,200);
 }
 function fitQuotePanel(){
- const panel=$('.x-right');if(!panel||window.innerWidth<1180)return;
+ const panel=$('.x-right');if(!panel||window.innerWidth<=1320)return;
  const top=Math.max(100,panel.getBoundingClientRect().top);
  const height=Math.max(360,Math.floor(window.innerHeight-top-20));
  if(panel.style.height!==height+'px')panel.style.height=height+'px';
