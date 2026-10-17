@@ -130,9 +130,10 @@ function selectOffer(id){
  else if(changed)enter($('#purchase-preview .quote-scroll'),6,200);
 }
 function fitQuotePanel(){
- const panel=$('#purchase-preview');if(!panel||window.innerWidth<1180)return;
- const height=Math.max(280,Math.floor(window.innerHeight-128));
- if(panel.style.maxHeight!==height+'px')panel.style.maxHeight=height+'px';
+ const panel=$('.x-right');if(!panel||window.innerWidth<1180)return;
+ const top=Math.max(100,panel.getBoundingClientRect().top);
+ const height=Math.max(360,Math.floor(window.innerHeight-top-20));
+ if(panel.style.height!==height+'px')panel.style.height=height+'px';
 }
 
 function startLayoutTracking(){
