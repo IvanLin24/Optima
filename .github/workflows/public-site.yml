@@ -1,0 +1,50 @@
+name: Optima public site
+
+on:
+  push:
+    branches: [frontend]
+    paths:
+      - 'dist/site/**'
+      - '.github/workflows/public-site.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check source integrity
+        run: |
+          node --check dist/site/site.js
+          test -s dist/site/index.html
+          test -s dist/site/site.css
+          test -s dist/site/mark.svg
+          grep -q 'Курьерские пакеты' dist/js/data.js
+      - name: Capture real browser rendering
+        run: |
+          CHROME="$(command -v google-chrome || command -v chromium || command -v chromium-browser)"
+          test -n "$CHROME"
+          mkdir -p public-review
+          python3 -m http.server 4173 --directory dist >/tmp/optima-site.log 2>&1 &
+          sleep 3
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=2500 --window-size=1600,1000 --screenshot=public-review/desktop.png http://127.0.0.1:4173/site/
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --hide-scrollbars --virtual-time-budget=2500 --window-size=440,930 --screenshot=public-review/mobile.png http://127.0.0.1:4173/site/
+          test -s public-review/desktop.png
+          test -s public-review/mobile.png
+          "$CHROME" --headless --no-sandbox --disable-dev-shm-usage --disable-gpu --virtual-time-budget=2500 --dump-dom http://127.0.0.1:4173/site/ > /tmp/site-rendered.html
+          grep -q '3 050' /tmp/site-rendered.html || grep -q '3&nbsp;050' /tmp/site-rendered.html || grep -q '3.050' /tmp/site-rendered.html || grep -q 'id="save"' /tmp/site-rendered.html
+      - name: Upload previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: optima-public-review
+          path: public-review/*.png
+          if-no-files-found: warn
+          retention-days: 14
