@@ -319,3 +319,14 @@
  .x-process{margin-top:28px}
  :root[data-concept="exchange"] .x-breakdown+.x-breakdown{border-left:0;border-top:1px solid var(--ex-line);padding-left:0}
 }
+
+/* A selected purchase displays its financial stakes without scrolling. */
+.x-focus-price{display:flex;align-items:flex-end;justify-content:space-between;gap:9px;margin-top:15px;padding-top:12px;border-top:1px solid var(--ex-line)}
+.x-focus-price>div{display:flex;flex-direction:column;gap:4px}
+.x-focus-price small{color:var(--ex-muted);font-size:9px;letter-spacing:.085em;font-weight:700}
+.x-focus-price strong{font-size:25px;line-height:1.1;font-weight:700;letter-spacing:-.045em;color:var(--ex-ink)}
+.x-focus-price>span{color:var(--ex-positive);font-size:11px;font-weight:700;text-align:right;padding-bottom:3px}
+.x-focus-product{padding-bottom:13px}
+.x-demand-diagram{margin-top:5px}
+.x-demand{padding-top:9px;padding-bottom:10px}
+@media(max-width:1550px){.x-focus-price strong{font-size:23px}.x-focus-price>span{font-size:10px}}

@@ -25,7 +25,9 @@ export function renderExchangeFocus(m){
  const circle=2*Math.PI*62;
  return `<div class="x-focus-product">
    <div class="x-focus-head"><span class="x-detail-label">ВЫБРАННОЕ ПРЕДЛОЖЕНИЕ</span><button class="x-focus-shortcut" data-action="${order?'open-existing':'quote-open'}" ${order?`data-id="${o.id}"`:''} aria-label="Перейти к условиям выбранной закупки">К условиям ${m.icon('arrow','sm')}</button></div>
-   <div class="x-product-info"><span class="x-category">${safe(o.category)}</span><h2>${safe(o.name)}</h2><p>${safe(o.spec)}</p><span class="x-supplier">${m.icon('briefcase','sm')}${safe(o.supplier)}</span></div>
+   <div class="x-product-info"><span class="x-category">${safe(o.category)}</span><h2>${safe(o.name)}</h2><p>${safe(o.spec)}</p><span class="x-supplier">${m.icon('briefcase','sm')}${safe(o.supplier)}</span>
+  <div class="x-focus-price"><div><small>ЦЕНА ВАШЕГО ОБЪЁМА</small><strong>${m.money(c.groupTotal)}</strong></div><span>−${m.money(c.saving)} экономия</span></div>
+ </div>
  </div>
  <div class="x-demand" id="group-brief">
   <div class="x-demand-head"><div><small>ОБЪЕДИНЁННЫЙ СПРОС</small><h3>До оптовой цены</h3></div><span class="${c.ready?'x-state-ready':'x-state-collecting'}">${c.ready?'Порог достигнут':'Идёт сбор'}</span></div>
