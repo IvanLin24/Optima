@@ -12,6 +12,15 @@ test('Сценарий клиента: поиск, подбор, расчёт, �
  const click=selector=>{const e=document.querySelector(selector);assert.ok(e,'Missing '+selector);e.click();};
  const input=(selector,value)=>{const e=document.querySelector(selector);e.value=value;e.dispatchEvent(new window.Event('input',{bubbles:true}));};
  const change=(selector,value)=>{const e=document.querySelector(selector);e.value=value;e.dispatchEvent(new window.Event('change',{bubbles:true}));};
+ const assertSection=id=>{
+  assert.equal(document.querySelector('.side-nav [aria-current="page"]').dataset.view,id);
+  assert.equal(document.querySelectorAll('.side-nav .active').length,1);
+  assert.equal(document.querySelector('.tabs [aria-current="page"]').dataset.view,id);
+  assert.equal(location.hash,'#'+id);
+ };
+ assert.equal(document.querySelector('[data-action="bank"]'),null);
+ assert.deepEqual([...document.querySelectorAll('.side-nav [data-view]')].map(e=>e.dataset.view),['offers','orders','needs','analytics']);
+ assertSection('offers');
  assert.equal(document.querySelectorAll('.offer-card').length,6);
  input('#offer-search','перчатки');assert.equal(document.querySelectorAll('.offer-card').length,1);
  input('#offer-search','несуществующий товар');assert.match(document.querySelector('#offers-grid').textContent,/пока нет/);
@@ -24,17 +33,17 @@ test('Сценарий клиента: поиск, подбор, расчёт, �
  click('#consent');assert.equal(document.querySelector('[data-action="review"]').disabled,false);input('#quantity','');assert.equal(document.querySelector('[data-action="review"]').disabled,true);input('#quantity','2000');assert.equal(document.querySelector('[data-action="review"]').disabled,false);
  click('[data-action="review"]');assert.match(document.querySelector('#overlay-root').textContent,/Подтверждение участия/);
  click('[data-action="confirm"]');assert.match(document.querySelector('#overlay-root').textContent,/Вы в закупке/);
- click('[data-action="success-orders"]');assert.equal(document.querySelectorAll('.order-card').length,1);
+ click('[data-action="success-orders"]');assertSection('orders');assert.equal(document.querySelectorAll('.order-card').length,1);
  const stored=JSON.parse(localStorage.getItem('optima-vtb-state-v1'));assert.equal(stored.orders.length,1);assert.equal(stored.orders[0].quantity,2000);assert.equal(stored.orders[0].calculation.groupTotal,5850);
  click('[data-action="order-detail"]');click('[data-action="cancel-ask"]');click('[data-action="cancel-confirm"]');
  assert.equal(JSON.parse(localStorage.getItem('optima-vtb-state-v1')).orders[0].status,'cancelled');
- click('[data-view="needs"]');click('[data-action="new-need"]');change('#need-product','bags');change('#need-price','2');
+ click('[data-view="needs"]');assertSection('needs');click('[data-action="new-need"]');change('#need-product','bags');change('#need-price','2');
  document.querySelector('#need-form').dispatchEvent(new window.Event('submit',{bubbles:true,cancelable:true}));
  assert.equal(JSON.parse(localStorage.getItem('optima-vtb-state-v1')).needs.length,4);
  const links=[...document.querySelectorAll('[data-action="offer"][data-price="2"]')];assert.equal(links.length,1);links[0].click();
  click('#consent');assert.equal(document.querySelector('[data-action="review"]').disabled,true,'Не допускать невыгодную закупку');
  click('[data-action="close"]');
- click('[data-view="analytics"]');assert.equal(document.querySelectorAll('.chart-column').length,6);
+ click('[data-view="analytics"]');assertSection('analytics');assert.equal(document.querySelectorAll('.chart-column').length,6);
  assert.equal(document.querySelectorAll('.calculation-table').length,0);
  dom.window.close();
 });
