@@ -3,7 +3,7 @@ import {money,number,percent,calculate,validateNeed,parseNeeds,matchNeed} from '
 import {loadState,saveState,event as addEvent} from './store.js';
 import {icon,product,logo} from './icons.js';
 import {enter,exitLayer} from './motion.js';
-import {renderExchange,renderExchangeRows,renderExchangeFocus} from './exchange.js';
+import {renderExchange,renderExchangeRows,renderExchangeFocus,renderExchangeOrders,renderExchangeNeeds,renderExchangeAnalytics} from './exchange.js';
 const $=s=>document.querySelector(s);
 const THEME_KEY='optima-vtb-theme-v1';
 const THEME_LABELS={dark:'Тёмная',light:'Светлая',system:'Системная'};
@@ -53,7 +53,7 @@ function render(){
  updateShell();
  const headings={orders:['Мои закупки','Все ваши заявки и согласованные условия в одном месте.'],needs:['Потребности бизнеса','Укажите нужные товары. Оптима найдёт совместимые предложения.'],analytics:['Экономика закупок','Посмотрите, как объединение объёма меняет стоимость вашего заказа.']};
  const actions=view==='analytics'?button(icon('download','sm')+'Выгрузить расчёт','export','secondary','aria-label="Выгрузить расчёт"'):view==='orders'?button(icon('plus','sm')+'Выбрать закупку','go-offers','primary','aria-label="Выбрать закупку"'):button(icon('upload','sm')+'Загрузить список','upload','secondary','aria-label="Загрузить список закупок"')+button(icon('plus','sm')+'Добавить потребность','new-need','primary','aria-label="Добавить потребность"');
- $('#scene').innerHTML=`${view==='offers'?'':`<header class="page-header"><div><span class="eyebrow">ОПТИМА / ДЛЯ БИЗНЕСА</span><h1>${headings[view][0]}</h1><p>${headings[view][1]}</p></div><div class="page-actions">${actions}</div></header>`}<div id="view-content" data-section="${view}">${view==='offers'?offersView():view==='orders'?ordersView():view==='needs'?needsView():analyticsView()}</div><footer class="footer"><div class="footer-brand">Оптима<span>Совместные закупки для бизнеса</span></div><p class="data-note">Демонстрационный прототип.<br>Компании, цены и условия вымышлены.</p><div class="footer-links"><button data-action="help">Как работает сервис${icon('arrow','sm')}</button><button data-action="privacy">Данные и условия${icon('arrow','sm')}</button></div></footer>`;
+ $('#scene').innerHTML=`${view==='offers'||conceptMode==='exchange'?'':`<header class="page-header"><div><span class="eyebrow">ОПТИМА / ДЛЯ БИЗНЕСА</span><h1>${headings[view][0]}</h1><p>${headings[view][1]}</p></div><div class="page-actions">${actions}</div></header>`}<div id="view-content" data-section="${view}">${view==='offers'?offersView():view==='orders'?ordersView():view==='needs'?needsView():analyticsView()}</div><footer class="footer"><div class="footer-brand">Оптима<span>Совместные закупки для бизнеса</span></div><p class="data-note">Демонстрационный прототип.<br>Компании, цены и условия вымышлены.</p><div class="footer-links"><button data-action="help">Как работает сервис${icon('arrow','sm')}</button><button data-action="privacy">Данные и условия${icon('arrow','sm')}</button></div></footer>`;
  fitQuotePanel();startLayoutTracking();
  if(renderedView!==view){enter($('#scene'),8,320);if(view==='offers')enterCards();}
  renderedView=view;
@@ -198,17 +198,23 @@ function updateQuoteQuantity(value){
  $('#quote-announcement').textContent=`Стоимость ${money(c.groupTotal)}. Экономия ${money(c.saving)}.`;
 }
 
+function exchangeSecondaryModel(){
+ return {OFFERS,state,orderFilter,money,number,percent,date,calculate,icon,product,matchNeed,statusLabel,activeOrders:activeOrders()};
+}
 function ordersView(){
+ if(conceptMode==='exchange')return renderExchangeOrders(exchangeSecondaryModel());
  const orders=state.orders.filter(o=>orderFilter==='all'||(orderFilter==='active'?o.status!=='cancelled':o.status==='cancelled'));
  return `<div class="chips status-filters mb20">${[['all','Все'],['active','Активные'],['cancelled','Отменённые']].map(([id,label])=>`<button class="chip ${orderFilter===id?'active':''}" data-action="order-filter" data-filter="${id}" aria-pressed="${orderFilter===id}">${label}</button>`).join('')}</div>${orders.length?orders.map(order=>{const o=offerById(order.offerId);return `<article class="order-card"><div class="order-art" style="--visual:${o.accent}">${product(o.kind)}</div><div class="order-info"><div class="badges-line"><span class="status ${order.status==='cancelled'?'gray':order.status==='ready'?'green':'blue'}">${statusLabel(order)}</span><small>${order.number}</small></div><h3>${o.name}</h3><p class="order-meta">${number(order.quantity)} ${o.unit} · ${o.supplier}</p></div><div class="order-price"><strong class="amount">${money(order.calculation.groupTotal)}</strong><small class="${order.status==='cancelled'?'cancelled':''}">${order.status==='cancelled'?'Заявка отменена':'Ожидаемая экономия '+money(order.calculation.saving)}</small></div><div class="order-action">${button('Открыть условия'+icon('arrow','sm'),'order-detail','secondary',`data-id="${order.id}"`)}</div></article>`;}).join(''):`<section class="orders-empty"><div class="orders-empty-copy"><span class="eyebrow">${orderFilter==='cancelled'?'ВСЁ В ПОРЯДКЕ':'НОВЫЕ ВОЗМОЖНОСТИ ДЛЯ БИЗНЕСА'}</span><h2>${orderFilter==='cancelled'?'Отменённых заявок нет':'Начните с первой закупки'}</h2><p>Выберите предложение, рассчитайте свой объём и подтвердите условия. Здесь появятся ваши заявки.</p>${button('К предложениям'+icon('arrow','sm'),'go-offers','primary')}</div><img src="assets/optima-procurement-hero.png" width="1254" height="1254" alt="" loading="lazy"></section>`}`;
 }
 
 function statusLabel(o){return o.status==='cancelled'?'Отменена':o.status==='ready'?'Объём группы набран':'Сбор группы';}
 function needsView(){
+ if(conceptMode==='exchange')return renderExchangeNeeds(exchangeSecondaryModel());
  return `${state.needs.length?`<section class="panel needs-panel"><div class="needs-summary"><div><span class="summary-count">${state.needs.length}</span><strong>Позиций в списке</strong></div><span>${icon('check','sm')}Подобраны предложения: ${state.needs.filter(n=>matchNeed(n,OFFERS)).length}</span></div><div class="table-wrap"><table class="data-table"><caption class="sr-only">Закупочные потребности вашей компании</caption><thead><tr><th>Товар и характеристики</th><th>Количество</th><th>Нужен до</th><th>Предложение</th><th><span class="sr-only">Удалить</span></th></tr></thead><tbody>${state.needs.map(n=>{const o=matchNeed(n,OFFERS);return `<tr><td><div class="need-product"><span class="need-art" style="--visual:${o?.accent||'#eef3fb'}">${o?product(o.kind):icon('box')}</span><div><div class="cell-main">${esc(n.name)}</div><div class="cell-sub">${esc(n.spec)}</div></div></div></td><td class="amount">${number(n.quantity)} ${esc(n.unit)}</td><td>${date(n.deadline)}</td><td>${o?`<button class="text-button" data-action="offer" data-id="${o.id}" data-quantity="${n.quantity}" data-price="${n.price}">Смотреть${icon('arrow','sm')}</button>`:`<span class="status gray">Ищем совпадение</span>`}</td><td><button class="icon-button" data-action="delete-need" data-id="${esc(n.id)}" aria-label="Удалить потребность ${esc(n.name)}">${icon('close','sm')}</button></td></tr>`;}).join('')}</tbody></table></div></section>`:`<div class="empty"><div class="empty-icon">${icon('file')}</div><h3>Что нужно вашему бизнесу?</h3><p>Добавьте товар и срок, чтобы найти подходящее предложение общей закупки.</p>${button('Добавить потребность','new-need','primary')}</div>`}<section class="import-banner"><span class="banner-icon">${icon('upload')}</span><div><h2>Ваш список уже готов?</h2><p>Загрузите позиции из учётной системы в CSV или JSON.<br>Оптима подберёт совместимые предложения.</p></div>${button('Загрузить список'+icon('arrow','sm'),'upload','secondary')}</section>`;
 }
 
 function analyticsView(){
+ if(conceptMode==='exchange')return renderExchangeAnalytics(exchangeSecondaryModel());
  const expected=activeOrders().reduce((a,o)=>a+o.calculation.saving,0),t=totals(),values=OFFERS.map(o=>calculate(o).saving),max=Math.max(...values);
  const categories=['Упаковка','Для офиса','Хозтовары'].map((name,i)=>({name,color:['#0062ff','#689bff','#b9d1ff'][i],value:OFFERS.filter(o=>o.category===name).reduce((a,o)=>a+calculate(o).saving,0)}));
  let offset=0;const circumference=2*Math.PI*72;

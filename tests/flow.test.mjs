@@ -29,6 +29,14 @@ test('Рабочее пространство: подборка, живой ра
  assert.equal(document.documentElement.dataset.concept,'exchange','Новый режим по умолчанию');
  assert.ok(document.querySelector('.exchange-scene'),'Независимая DOM-композиция');
  assert.equal(document.querySelectorAll('.x-row').length,6);
+ click('.x-side-link[data-view="orders"]');
+ assert.ok(document.querySelector('.x-records'),'Exchange: самостоятельный журнал заявок');
+ click('.x-side-link[data-view="needs"]');
+ assert.ok(document.querySelector('.x-needs-entry'),'Exchange: список потребностей');
+ click('.x-side-link[data-view="analytics"]');
+ assert.ok(document.querySelector('.x-analytics-summary'),'Exchange: новая аналитика');
+ click('.x-side-link[data-view="offers"]');
+
  assert.equal(document.querySelector('#offers-count').textContent,'6');
  click('.x-row [data-action="select-offer"][data-id="bags"]');
  assert.equal(document.querySelector('#purchase-preview').dataset.offerId,'bags');
