@@ -179,7 +179,7 @@ test('Рабочее пространство: подборка, живой ра
  assert.equal(document.querySelectorAll('.x-needs-entry').length,4,'В Exchange сохранились все потребности');
  click('.x-side-link[data-view="analytics"]');
  assert.equal(document.querySelectorAll('.x-bar-entry').length,6);
- assert.match(document.querySelector('.x-analytics-summary').textContent,/8[\\s\\u00a0\\u202f]*610/);
+ assert.match(document.querySelector('.x-analytics-summary').textContent,/8[\s\u00a0\u202f]*610/);
  click('.x-side-link[data-view="offers"]');
  assert.equal(document.querySelectorAll('.x-row').length,6);
  assert.equal(JSON.parse(localStorage.getItem('optima-vtb-state-v1')).orders[0].status,'cancelled');
