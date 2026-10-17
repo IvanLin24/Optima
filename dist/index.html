@@ -10,15 +10,14 @@
     (() => {
       try {
         const saved = localStorage.getItem('optima-vtb-theme-v1');
-        const mode = ['dark', 'light', 'system'].includes(saved) ? saved : 'dark';
+        const mode = ['dark', 'light', 'system'].includes(saved) ? saved : 'light';
         const dark = mode === 'dark' || (mode === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
         document.documentElement.dataset.themeMode = mode;
-        const concept=localStorage.getItem('optima-vtb-concept-v1');
-        document.documentElement.dataset.concept=['exchange','classic','workspace','studio'].includes(concept)?concept:'exchange';
+        document.documentElement.dataset.concept='exchange';
       } catch {
-        document.documentElement.dataset.theme = 'dark';
-        document.documentElement.dataset.themeMode = 'dark';
+        document.documentElement.dataset.theme = 'light';
+        document.documentElement.dataset.themeMode = 'light';
         document.documentElement.dataset.concept = 'exchange';
       }
     })();
