@@ -15,11 +15,11 @@
         document.documentElement.dataset.theme = dark ? 'dark' : 'light';
         document.documentElement.dataset.themeMode = mode;
         const concept=localStorage.getItem('optima-vtb-concept-v1');
-        document.documentElement.dataset.concept=['classic','workspace','studio'].includes(concept)?concept:'classic';
+        document.documentElement.dataset.concept=['exchange','classic','workspace','studio'].includes(concept)?concept:'exchange';
       } catch {
         document.documentElement.dataset.theme = 'dark';
         document.documentElement.dataset.themeMode = 'dark';
-        document.documentElement.dataset.concept = 'classic';
+        document.documentElement.dataset.concept = 'exchange';
       }
     })();
   </script>
