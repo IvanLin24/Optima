@@ -1,0 +1,48 @@
+/* Feedback is attached to controls, rather than moving every surface. */
+:root{--motion-quick:140ms;--motion-ease:cubic-bezier(.2,.75,.25,1)}
+html{scrollbar-gutter:stable}html:has(#modal[open]){overflow:hidden}#modal{overscroll-behavior:contain}
+.button,.icon-button,.send-button,.global-search,.organization,.profile-button{
+ transition:background-color var(--motion-quick),border-color var(--motion-quick),color var(--motion-quick),box-shadow var(--motion-quick),translate 90ms var(--motion-ease);
+}
+.text-link,.nav-link,.mobile-navigation>a,.mobile-navigation>button{
+ transition:color var(--motion-quick),background-color var(--motion-quick),box-shadow var(--motion-quick);
+}
+.text-link>svg,.home-order>svg{transition:translate 160ms var(--motion-ease),color var(--motion-quick)}
+.home-order,[data-action="home-select-purchase"]{
+ transition:background-color 160ms,border-color 160ms,box-shadow 160ms;
+}
+.space-tabs button,.deal-tabs>a,.deal-talk>header nav>a,.channel-tabs button,.conversation-select,.buy-tabs button,.reader-tabs button{
+ transition:color var(--motion-quick),background-color var(--motion-quick),border-color var(--motion-quick),box-shadow var(--motion-quick);
+}
+.space-thresholds>summary>svg,.review-all>summary>svg,.home-cost-details>summary>svg{transition:transform 180ms var(--motion-ease)}
+/* Native details retain their own semantics and keyboard handling. Browsers without
+   intrinsic-size interpolation simply use the normal immediate open/close. */
+@supports (interpolate-size:allow-keywords) and selector(details::details-content){
+ :where(details.space-thresholds,details.review-all){interpolate-size:allow-keywords}
+ :where(details.space-thresholds,details.review-all)::details-content{
+  block-size:0;opacity:0;overflow:clip;
+  transition:block-size 210ms var(--motion-ease),opacity 150ms var(--motion-ease),content-visibility 210ms allow-discrete;
+ }
+ :where(details.space-thresholds,details.review-all)[open]::details-content{block-size:auto;opacity:1}
+}
+.button:focus-visible,.icon-button:focus-visible,.send-button:focus-visible,.global-search:focus-visible,.organization:focus-visible,.profile-button:focus-visible,.text-link:focus-visible,.nav-link:focus-visible,.home-order:focus-visible,[data-action="home-select-purchase"]:focus-visible,.mobile-navigation>a:focus-visible,.mobile-navigation>button:focus-visible{
+ outline:2px solid #2766cf;outline-offset:3px;
+}
+.button:active:not(:disabled),.icon-button:active:not(:disabled),.send-button:active:not(:disabled){translate:0 1px}
+.button.text:active:not(:disabled),.button.quiet:active:not(:disabled){translate:none}
+@media(hover:hover) and (pointer:fine){
+ .button.primary:hover:not(:disabled){box-shadow:0 3px 9px #1c4da526}
+ .text-link:hover>svg,.home-order:hover>svg{translate:3px 0}
+ .home-order:hover{opacity:1}
+ [data-action="home-select-purchase"]:hover:not([aria-pressed="true"]){background-color:#f1f5fd;border-color:#cbd9f1}
+}
+#modal[data-motion-stage="opening"]::backdrop{animation:experience-backdrop-in 190ms var(--motion-ease) both}
+#modal[data-motion-stage="closing"]::backdrop{animation:experience-backdrop-out 130ms cubic-bezier(.4,0,1,1) both}
+@keyframes experience-backdrop-in{from{background-color:#182e4b00;backdrop-filter:blur(0)}to{background-color:#182e4b65;backdrop-filter:blur(3px)}}
+@keyframes experience-backdrop-out{from{background-color:#182e4b65;backdrop-filter:blur(3px)}to{background-color:#182e4b00;backdrop-filter:blur(0)}}
+@media(prefers-reduced-motion:reduce){
+ .button,.icon-button,.send-button,.global-search,.organization,.profile-button,.text-link,.nav-link,.mobile-navigation>a,.mobile-navigation>button,.home-order,[data-action="home-select-purchase"],.text-link>svg,.home-order>svg,.space-tabs button,.deal-tabs>a,.deal-talk>header nav>a,.channel-tabs button,.conversation-select,.buy-tabs button,.reader-tabs button,.space-thresholds>summary>svg,.review-all>summary>svg,.home-cost-details>summary>svg,#toast{transition:none}
+ :where(details.space-thresholds,details.review-all)::details-content{transition:none}
+ .button:active:not(:disabled),.icon-button:active:not(:disabled),.send-button:active:not(:disabled),.text-link:hover>svg,.home-order:hover>svg{translate:none}
+ #modal[data-motion-stage]::backdrop{animation:none}
+}

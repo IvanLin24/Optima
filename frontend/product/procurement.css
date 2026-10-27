@@ -1,0 +1,204 @@
+/* Shared primitives used by the document and supplier workspaces. */
+.buy-tabs{display:flex;gap:27px;border-bottom:1px solid #dce3ec;margin-bottom:24px;overflow-x:auto;scrollbar-width:none}
+.buy-tabs button{display:flex;gap:8px;align-items:center;font-size:14px;padding:0 0 15px;position:relative;color:#5a6980;white-space:nowrap}
+.buy-tabs button.active{color:#243854;font-weight:600}
+.buy-tabs button.active:after{content:'';height:2px;background:#1d5ad2;position:absolute;bottom:-1px;left:0;right:0}
+.buy-tabs button>span{background:#e9eef6;border-radius:4px;font-size:11px;min-width:19px;padding:1px 5px;color:#64748d}
+.buy-search{display:flex;align-items:center;gap:10px;flex:1;min-width:0;background:#fff;border:1px solid #d9e1ec;border-radius:8px;padding:0 13px;color:#738299}
+.buy-search input{border:0;outline:0;background:transparent;min-width:0;width:100%;height:44px;font-size:14px;color:#26374f}
+.buy-search:focus-within{border-color:#2562cc;box-shadow:0 0 0 3px #2562cc12}
+.buy-meter{height:5px;background:#e9eef6;border-radius:4px;overflow:hidden;margin:9px 0 6px}
+.buy-meter>i{display:block;height:100%;background:#5984ca;border-radius:4px}
+
+/* Catalog: product, group terms and personal cost form one readable comparison. */
+.procurement-workspace{--catalog-ink:#213c58;--catalog-muted:#566f88;--catalog-line:#dce5ef;min-width:0}
+.procurement-workspace>.buy-heading{align-items:center;gap:24px;margin:0 0 25px}
+.procurement-workspace .buy-heading>div{min-width:0}
+.procurement-workspace .buy-heading>div>p{font-size:13px;line-height:1.6;color:#526b88;margin:0}
+.procurement-workspace .buy-heading h1{font-size:36px;font-weight:650;letter-spacing:-1px;line-height:1.2;color:#173652;margin:7px 0 9px}
+.procurement-workspace .buy-heading-copy{display:block;font-size:15px;line-height:1.65;color:#526b88;max-width:640px}
+.procurement-workspace .buy-heading>.button{min-height:44px;flex-shrink:0;padding:12px 18px;font-size:14px}
+.procurement-workspace>.buy-tabs{gap:30px;margin:0 0 25px;border-color:#cddaea}
+.procurement-workspace>.buy-tabs button{font-size:15px;gap:9px;min-height:46px;padding:0 0 15px;color:#516b87}
+.procurement-workspace>.buy-tabs button.active{color:#175abd}
+.procurement-workspace>.buy-tabs button.active:after{height:3px;border-radius:3px 3px 0 0;background:#2166dc}
+.procurement-workspace>.buy-tabs button>span{font-size:12px;background:#e5edf9;color:#496c99;border-radius:5px;padding:1px 6px}
+.procurement-workspace .buy-discovery{padding:0;border:0;background:transparent;box-shadow:none;margin-bottom:24px}
+.procurement-workspace .buy-filters{display:flex;align-items:stretch;gap:14px;margin:0 0 14px}
+.procurement-workspace .buy-search{padding:0 16px;border-color:#cfdceb;border-radius:11px;min-height:50px;box-shadow:0 2px 4px #25487004}
+.procurement-workspace .buy-search input{height:48px;font-size:15px;color:#294764}
+.procurement-workspace .buy-search input::placeholder{color:#617b98}
+.procurement-workspace .buy-search>svg{color:#5c7ca0}
+.procurement-workspace .buy-search>.icon-button{height:34px;width:34px;flex-shrink:0}
+.procurement-workspace .buy-sort{display:grid;position:relative;gap:2px;padding:6px 36px 6px 14px;min-width:198px;border:1px solid #cfdceb;border-radius:11px;background:#fff;color:#607791;font-size:11px}
+.procurement-workspace .buy-sort select{appearance:none;-webkit-appearance:none;border:0;outline:0;padding:0;background:transparent;min-width:0;width:100%;font:inherit;font-size:13px;color:#365679;cursor:pointer}
+.procurement-workspace .buy-sort>svg{position:absolute;right:13px;top:18px;pointer-events:none;color:#6d86a3}
+.procurement-workspace .buy-sort:focus-within{outline:2px solid #2464d8;outline-offset:2px}
+.procurement-workspace .buy-category-tabs{display:flex;align-items:center;gap:7px;padding:0;overflow:auto;scrollbar-width:none}
+.procurement-workspace .buy-category-tabs>button{display:flex;align-items:center;gap:9px;min-height:39px;padding:8px 13px;border:1px solid transparent;border-radius:8px;white-space:nowrap;font-size:13px;color:#526e8b;transition:background .16s,color .16s}
+.procurement-workspace .buy-category-tabs>button[aria-pressed=true]{background:#dfeaff;border-color:#c6d8f5;color:#245bad;font-weight:600}
+.procurement-workspace .buy-category-tabs>button:hover{background:#e8f0fc}
+.procurement-workspace .buy-category-tabs>button>span{font-size:12px;font-weight:400;color:#5f7a9c;min-width:14px;text-align:center}
+.procurement-workspace .buy-list-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:0 0 14px}
+.procurement-workspace .buy-list-heading>div{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.procurement-workspace .buy-list-heading h2{font-size:18px;line-height:1.5;color:#2e4a68}
+.procurement-workspace .buy-list-heading [role=status]{font-size:13px;color:#617991}
+.procurement-workspace .buy-list-heading [role=status]>strong{font-weight:600;color:#3e5c7a;margin-left:4px}
+.procurement-workspace .buy-list-heading>p{display:flex;align-items:center;gap:7px;font-size:12px;color:#5d7795;line-height:1.7}
+.procurement-workspace .buy-register{border:1px solid #d9e3ef;border-radius:15px;overflow:hidden;background:#fff;box-shadow:0 5px 20px #26476705}
+.procurement-workspace .buy-columns,.procurement-workspace .buy-offer{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.85fr) minmax(0,1fr);gap:0 26px}
+.procurement-workspace .buy-columns{background:#f7f9fc;border-bottom:1px solid #e1e8f1;padding:15px 25px;font-size:12px;color:#58718f}
+.procurement-workspace .buy-offer{position:relative;align-items:start;padding:26px 25px 0;border-bottom:1px solid #dce6f1;background:#fff}
+.procurement-workspace .buy-offer:last-child{border-bottom:0}
+.procurement-workspace .buy-offer--joined:before{content:'';position:absolute;left:0;top:26px;width:3px;height:38px;border-radius:0 4px 4px 0;background:#2e70d8}
+.procurement-workspace .buy-product{display:flex;align-items:flex-start;gap:14px;min-width:0;grid-column:1;grid-row:1;padding:0 0 22px}
+.procurement-workspace .buy-product>div{min-width:0}
+.procurement-workspace .buy-product .product-media{width:44px;height:51px;flex-shrink:0;border-radius:9px;background:#f4f7fb;border-color:#e0e8f2}
+.procurement-workspace .buy-category{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:#59738f;margin:0 0 7px;line-height:1.6}
+.procurement-workspace .buy-member{font-size:11px;line-height:1.5;background:#eaf5ee;color:#357258;border-radius:5px;padding:2px 6px}
+.procurement-workspace .buy-product h2{font-size:21px;font-weight:600;letter-spacing:-.45px;line-height:1.35;color:#213f60;overflow-wrap:anywhere;margin:0 0 8px}
+.procurement-workspace .buy-product-open{font:inherit;letter-spacing:inherit;line-height:inherit;text-align:left;padding:0;color:inherit;border-radius:3px}
+.procurement-workspace .buy-product-open:hover{color:#185ec6;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.procurement-workspace .buy-product p{font-size:13px;line-height:1.7;color:#58718b;overflow-wrap:anywhere}
+.procurement-workspace .buy-supplier{display:block;font-size:13px;line-height:1.7;color:#456485;margin-top:12px;overflow-wrap:anywhere}
+.procurement-workspace .buy-region{display:flex;align-items:center;gap:5px;font-size:12px;line-height:1.7;color:#647c97;margin-top:3px;overflow-wrap:anywhere}
+.procurement-workspace .buy-volume{grid-column:2;grid-row:1;min-width:0;border-left:1px solid #e2eaf3;padding:0 0 20px 23px}
+.procurement-workspace .buy-price-caption{display:flex;align-items:center;gap:7px;font-size:12px;line-height:1.7;color:#58738f}
+.procurement-workspace .buy-price-caption>small{font-size:11px;background:#edf3fc;padding:1px 4px;border-radius:4px;color:#5d7b9c}
+.procurement-workspace .buy-unit-price{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;margin:5px 0 2px}
+.procurement-workspace .buy-unit-price>strong{font-size:30px;line-height:1.3;letter-spacing:-.8px;font-weight:600;color:#285a97;font-variant-numeric:tabular-nums}
+.procurement-workspace .buy-unit-price>span{font-size:12px;color:#536f8d}
+.procurement-workspace .buy-price-condition{font-size:12px;color:#58718f;line-height:1.7}
+.procurement-workspace .buy-volume-line{display:flex;align-items:baseline;justify-content:space-between;gap:7px;font-size:12px;line-height:1.7;margin-top:18px;color:#5d7693}
+.procurement-workspace .buy-volume-line>strong{font-size:12px;font-weight:600;color:#456484}
+.procurement-workspace .buy-volume-line small{font-size:11px;font-weight:400;color:#69819c}
+.procurement-workspace .buy-meter{height:5px;margin:7px 0}
+.procurement-workspace .buy-meter>i{background:#5a8ee1}
+.procurement-workspace .buy-threshold-caption{display:flex;align-items:center;gap:5px;font-size:12px;line-height:1.7;color:#5d7591}
+.procurement-workspace .buy-threshold-caption.is-reached{color:#34735c}
+.procurement-workspace .buy-price-before{font-size:12px;line-height:1.7;color:#617b97;margin-top:12px}
+.procurement-workspace .buy-price-before>strong{font-weight:500;color:#486886;white-space:nowrap}
+.procurement-workspace .buy-estimate{grid-column:3;grid-row:1;min-width:0;align-self:start;padding:18px 18px 14px;background:#edf4ff;border:0;border-radius:12px;margin-bottom:22px}
+.procurement-workspace .buy-estimate>.buy-estimate-label{display:block;font-size:12px;line-height:1.7;color:#506f95;margin:0 0 5px;overflow-wrap:anywhere}
+.procurement-workspace .buy-estimate>strong{display:block;font-size:32px;font-weight:600;line-height:1.3;letter-spacing:-.9px;color:#1d4b83;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;white-space:normal}
+.procurement-workspace .buy-estimate>span:not(.buy-estimate-label){display:block;font-size:12px;line-height:1.7;color:#597492;margin-top:5px}
+.procurement-workspace .buy-estimate>.buy-saving,.procurement-workspace .buy-revision-pending{display:flex;align-items:flex-start;gap:5px;font-size:12px;font-weight:500;line-height:1.7;margin-top:12px;color:#32745a;overflow-wrap:anywhere}
+.procurement-workspace .buy-estimate>.buy-saving.negative,.procurement-workspace .buy-revision-pending{color:#91652c}
+.procurement-workspace .buy-saving>svg,.procurement-workspace .buy-revision-pending>svg{margin-top:3px;flex-shrink:0}
+.procurement-workspace .buy-estimate-breakdown{margin-top:12px;padding-top:9px;border-top:1px solid #d6e3f5;font-size:12px;line-height:1.7;color:#527499}
+.procurement-workspace .buy-estimate-breakdown>summary{display:flex;align-items:center;justify-content:space-between;gap:8px;list-style:none;cursor:pointer;min-height:30px}
+.procurement-workspace .buy-estimate-breakdown>summary::-webkit-details-marker{display:none}
+.procurement-workspace .buy-estimate-breakdown>summary>svg{transition:transform .18s}
+.procurement-workspace .buy-estimate-breakdown[open]>summary>svg{transform:rotate(180deg)}
+.procurement-workspace .buy-estimate-breakdown dl{display:grid;gap:8px;margin:10px 0 0;padding-top:10px;border-top:1px solid #d6e3f5}
+.procurement-workspace .buy-estimate-breakdown dl>div{display:flex;justify-content:space-between;gap:9px}
+.procurement-workspace .buy-estimate-breakdown dd{margin:0;color:#355b86;white-space:nowrap;text-align:right}
+.procurement-workspace .buy-estimate-breakdown dl>div:last-child{border-top:1px solid #d6e3f5;padding-top:8px}
+.procurement-workspace .buy-offer-actions{grid-column:1/-1;display:grid;grid-template-columns:subgrid;align-items:center;gap:12px 26px;padding:15px 0 17px;border-top:1px solid #e4ebf3;margin:0}
+.procurement-workspace .buy-offer-terms{display:flex;align-items:center;flex-wrap:wrap;gap:9px;font-size:12px;line-height:1.7;color:#657c96}
+.procurement-workspace .buy-offer-terms strong{font-weight:500;color:#476789;margin-left:3px}
+.procurement-workspace .buy-offer-terms>i{height:12px;width:1px;background:#dce6f2}
+.procurement-workspace .buy-deadline{display:flex;align-items:flex-start;gap:7px;font-size:12px;line-height:1.7;color:#627a94;margin:0}
+.procurement-workspace .buy-deadline>svg{margin-top:3px;flex-shrink:0}
+.procurement-workspace .buy-deadline strong{font-weight:500;color:#476789}
+.procurement-workspace .buy-offer-cta{display:flex;justify-content:flex-end;align-items:center;gap:10px;min-width:0}
+.procurement-workspace .buy-offer-cta>.button{flex:1;font-size:13px;min-height:43px;padding:11px 14px;white-space:nowrap}
+.procurement-workspace .buy-offer-cta>.button.secondary{border-color:#ccdcf1;color:#245da8;background:#f7faff}
+.procurement-workspace .buy-save{height:43px;width:40px;border:1px solid #dce6f3;border-radius:8px;color:#6c86a8;flex-shrink:0}
+.procurement-workspace .buy-save:hover,.procurement-workspace .buy-save.saved{background:#eaf2ff;color:#2561ba;border-color:#c9dbf5}
+.procurement-workspace .buy-save.saved svg{fill:#cbdfff}
+.procurement-workspace .buy-explainer{display:flex;align-items:flex-start;gap:9px;font-size:12px;line-height:1.85;color:#5c7694;margin:20px 2px 0;max-width:850px}
+.procurement-workspace .buy-explainer>svg{margin-top:3px;flex-shrink:0}
+.procurement-workspace .buy-register .empty-state{border:0;background:transparent;padding:42px 24px}
+
+.procurement-workspace .buy-own{background:white;border:1px solid #d9e3ef;border-radius:15px;overflow:hidden}
+.procurement-workspace .buy-own-heading{padding:21px 25px;display:flex;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid #e2eaf3;background:#f8fafd}
+.procurement-workspace .buy-own-heading h2{font-size:18px;color:#294b6c}
+.procurement-workspace .buy-own-heading>span{font-size:12px;color:#597493}
+.procurement-workspace .buy-own-row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr) 165px auto;gap:20px;align-items:center;padding:25px}
+.procurement-workspace .buy-own-row>.buy-product,.procurement-workspace .buy-own-row>.buy-estimate{grid-column:auto;grid-row:auto;padding:0;margin:0}
+.procurement-workspace .buy-own-row>.buy-estimate{padding:14px 16px}
+.procurement-workspace .buy-own-row>.buy-estimate>strong{font-size:26px}
+.procurement-workspace .buy-own-state>span:last-child{display:block;font-size:13px;line-height:1.7;margin-top:8px;color:#58718e}
+.procurement-workspace .buy-own-row>.button{font-size:13px;min-height:43px}
+
+@media(max-width:1200px){
+ .procurement-workspace .buy-columns,.procurement-workspace .buy-offer{grid-template-columns:minmax(0,1.2fr) minmax(0,.85fr) minmax(0,1fr);column-gap:20px}
+ .procurement-workspace .buy-volume{padding-left:18px}
+ .procurement-workspace .buy-offer-actions{column-gap:20px}
+ .procurement-workspace .buy-product .product-media{display:none}
+ .procurement-workspace .buy-product h2{font-size:20px}
+ .procurement-workspace .buy-estimate{padding-left:16px;padding-right:16px}
+ .procurement-workspace .buy-estimate>strong{font-size:30px}
+ .procurement-workspace .buy-own-row{grid-template-columns:minmax(0,1fr) 160px;gap:18px}
+ .procurement-workspace .buy-own-row>.buy-estimate{grid-column:2;grid-row:1}.procurement-workspace .buy-own-state{grid-column:1;grid-row:2}.procurement-workspace .buy-own-row>.button{grid-column:2;grid-row:2}
+}
+@media(max-width:950px){
+ .procurement-workspace .buy-list-heading>p{display:none}
+ .procurement-workspace .buy-columns{display:none}
+ .procurement-workspace .buy-offer{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px 24px;padding:24px 24px 0}
+ .procurement-workspace .buy-product{grid-column:1/-1;grid-row:1;padding:0}
+ .procurement-workspace .buy-product .product-media{display:grid}
+ .procurement-workspace .buy-volume{grid-column:1;grid-row:2;border:0;padding:0}
+ .procurement-workspace .buy-estimate{grid-column:2;grid-row:2;margin:0}
+ .procurement-workspace .buy-offer-actions{grid-row:3;grid-template-columns:1fr 1fr;gap:10px 24px}
+ .procurement-workspace .buy-offer-terms{grid-column:1;grid-row:1}.procurement-workspace .buy-deadline{grid-column:1;grid-row:2}.procurement-workspace .buy-offer-cta{grid-column:2;grid-row:1/3}
+}
+@media(max-width:650px){
+ .procurement-workspace>.buy-heading{margin-bottom:18px;align-items:flex-start;gap:15px}
+ .procurement-workspace .buy-heading>div>p{display:none}
+ .procurement-workspace .buy-heading h1{font-size:31px;margin:0 0 7px;letter-spacing:-.8px}
+ .procurement-workspace .buy-heading-copy{font-size:13px;line-height:1.65;max-width:275px}
+ .procurement-workspace .buy-heading>.button{min-height:43px;height:43px;width:43px;padding:11px;font-size:0;margin:0;border-radius:11px}
+ .procurement-workspace .buy-heading>.button>svg{height:19px;width:19px}
+ .procurement-workspace>.buy-tabs{gap:23px;margin-bottom:20px}.procurement-workspace>.buy-tabs button{font-size:13px;gap:6px;min-height:44px;padding-bottom:13px}.procurement-workspace>.buy-tabs button>span{font-size:11px;padding:1px 4px}
+ .procurement-workspace .buy-discovery{margin-bottom:21px}
+ .procurement-workspace .buy-filters{gap:9px;margin-bottom:12px;display:grid;grid-template-columns:1fr auto}
+ .procurement-workspace .buy-search{min-height:46px;border-radius:10px;padding:0 12px;gap:8px}
+ .procurement-workspace .buy-search input{height:44px;font-size:16px}
+ .procurement-workspace .buy-search>svg{height:18px;width:18px}
+ .procurement-workspace .buy-sort{min-width:44px;width:44px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:0;overflow:hidden}
+ .procurement-workspace .buy-sort select{position:absolute;inset:0;width:100%;height:100%;font-size:0;color:transparent;cursor:pointer}
+ .procurement-workspace .buy-sort select option{font-size:14px;color:#365679}
+ .procurement-workspace .buy-sort>svg{position:static;height:18px;width:18px;color:#41668f}
+ .procurement-workspace .buy-category-tabs{gap:6px;margin-right:-16px;padding-right:16px}
+ .procurement-workspace .buy-category-tabs>button{min-height:39px;font-size:12px;padding:8px 10px;gap:6px}.procurement-workspace .buy-category-tabs>button>span{font-size:11px}
+ .procurement-workspace .buy-list-heading{margin-bottom:12px}.procurement-workspace .buy-list-heading h2{font-size:17px}.procurement-workspace .buy-list-heading [role=status]{font-size:12px}
+ .procurement-workspace .buy-register{border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+ .procurement-workspace .buy-offer{background:#fff;border:1px solid #dce5ef;border-radius:14px;margin-bottom:17px;padding:21px 18px 0;gap:19px 14px}
+ .procurement-workspace .buy-offer:last-child{border-bottom:1px solid #dce5ef}
+ .procurement-workspace .buy-offer--joined:before{top:22px;height:36px}
+ .procurement-workspace .buy-product{gap:12px}.procurement-workspace .buy-product .product-media{width:36px;height:43px;border-radius:8px}
+ .procurement-workspace .buy-category{font-size:12px;margin-bottom:5px}.procurement-workspace .buy-member{font-size:10px}
+ .procurement-workspace .buy-product h2{font-size:20px;line-height:1.35;margin-bottom:7px}
+ .procurement-workspace .buy-product p{font-size:13px;line-height:1.65}
+ .procurement-workspace .buy-supplier{font-size:12px;margin-top:9px}.procurement-workspace .buy-region{font-size:12px;margin-top:2px}
+ .procurement-workspace .buy-price-caption,.procurement-workspace .buy-price-condition,.procurement-workspace .buy-volume-line,.procurement-workspace .buy-volume-line>strong,.procurement-workspace .buy-threshold-caption{font-size:12px}
+ .procurement-workspace .buy-unit-price>strong{font-size:29px}.procurement-workspace .buy-unit-price>span{font-size:11px}.procurement-workspace .buy-price-before{font-size:11px;margin-top:10px}
+ .procurement-workspace .buy-volume-line{margin-top:14px;flex-wrap:wrap;gap:2px 5px}.procurement-workspace .buy-meter{margin:7px 0}
+ .procurement-workspace .buy-estimate{padding:13px 12px;border-radius:10px}
+ .procurement-workspace .buy-estimate>.buy-estimate-label{font-size:11px;line-height:1.6}
+ .procurement-workspace .buy-estimate>strong{font-size:26px;line-height:1.35;letter-spacing:-.8px}
+ .procurement-workspace .buy-estimate>span:not(.buy-estimate-label),.procurement-workspace .buy-estimate>.buy-saving,.procurement-workspace .buy-revision-pending{font-size:11px;line-height:1.7}
+ .procurement-workspace .buy-estimate-breakdown{font-size:11px;margin-top:12px;padding-top:7px}.procurement-workspace .buy-estimate-breakdown>summary{min-height:33px}
+ .procurement-workspace .buy-estimate-breakdown dl>div{display:grid;gap:1px}.procurement-workspace .buy-estimate-breakdown dd{text-align:left}
+ .procurement-workspace .buy-offer-actions{grid-template-columns:1fr;gap:9px;padding:15px 0 17px}
+ .procurement-workspace .buy-offer-terms{grid-column:1;grid-row:1;font-size:12px}
+ .procurement-workspace .buy-deadline{grid-column:1;grid-row:2;font-size:12px}
+ .procurement-workspace .buy-offer-cta{grid-column:1;grid-row:3;margin-top:5px;gap:11px}
+ .procurement-workspace .buy-offer-cta>.button{min-height:44px;font-size:13px;flex:1}.procurement-workspace .buy-save{min-height:44px;width:44px}
+ .procurement-workspace .buy-explainer{font-size:12px;margin-top:19px}
+ .procurement-workspace .buy-own-heading{padding:19px}.procurement-workspace .buy-own-heading>span{display:none}
+ .procurement-workspace .buy-own-row{padding:21px 19px;gap:20px 14px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .procurement-workspace .buy-own-row>.buy-product{grid-column:1/-1;grid-row:1}.procurement-workspace .buy-own-state{grid-column:1;grid-row:2}.procurement-workspace .buy-own-state>span:last-child{font-size:12px}
+ .procurement-workspace .buy-own-row>.buy-estimate{grid-column:2;grid-row:2;padding:12px}.procurement-workspace .buy-own-row>.button{grid-column:1/-1;grid-row:3;min-height:44px}
+}
+@media(max-width:359px){
+ .procurement-workspace>.buy-tabs{gap:17px}.procurement-workspace>.buy-tabs button{font-size:12px;gap:5px}
+ .procurement-workspace .buy-offer{padding-left:16px;padding-right:16px;column-gap:12px;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+ .procurement-workspace .buy-product .product-media{display:none}
+ .procurement-workspace .buy-estimate{padding:12px 10px}.procurement-workspace .buy-estimate>strong{font-size:22px}.procurement-workspace .buy-unit-price>strong{font-size:26px}
+}
+@media(prefers-reduced-motion:reduce){.procurement-workspace .buy-category-tabs>button,.procurement-workspace .buy-estimate-breakdown>summary>svg{transition:none}}
+@media(max-width:359px){.procurement-workspace .buy-estimate>strong{font-size:22px}}
+@media(max-width:359px){.procurement-workspace .buy-offer{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}.procurement-workspace .buy-estimate>strong{font-size:22px}}

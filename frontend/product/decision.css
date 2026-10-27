@@ -1,0 +1,30 @@
+/* Make the actual change legible before the full version table. */
+.review-change{display:grid;grid-template-columns:1fr 30px 1fr;align-items:center;gap:12px 22px;margin:0 28px;padding:24px 26px;background:#eff3fc;border:1px solid #dce5f4;border-radius:10px}
+.review-change>div>span{display:block;font-size:12px;color:#7b8ba4;margin-bottom:8px}
+.review-change del{font-size:28px;line-height:1.3;font-weight:400;letter-spacing:-.7px;color:#99a6ba;text-decoration-thickness:1px}
+.review-change>span{color:#9aacca;text-align:center}
+.review-change strong{font-size:29px;font-weight:500;line-height:1.3;letter-spacing:-.7px;color:#3466b6}
+.review-change>p{grid-column:1/-1;font-size:12px;color:#768ba9;padding-top:13px;margin-top:4px;border-top:1px solid #dae3f2}
+.review-terms{display:grid;grid-template-columns:.8fr .8fr 1.3fr;gap:15px;margin:0;padding:25px 28px 22px}
+.review-terms>div{padding-right:15px;border-right:1px solid #e3e8f0}.review-terms>div:last-child{padding:0;border:0}
+.review-terms dt{font-size:12px;color:#7b8ba2;line-height:1.7}
+.review-terms dd{font-size:24px;color:#3e587c;letter-spacing:-.6px;font-weight:500;line-height:1.4;margin:7px 0 0;white-space:nowrap}
+.review-terms small{font-size:12px;font-weight:400;letter-spacing:0;color:#7d8da5}
+.review-all{margin:0 28px;border-top:1px solid #e3e8f0;border-bottom:1px solid #e3e8f0}
+.review-all>summary{display:flex;align-items:center;justify-content:space-between;gap:15px;font-size:12px;color:#6981a1;cursor:pointer;list-style:none;padding:16px 0}
+.review-all>summary::-webkit-details-marker{display:none}.review-all>summary>svg{transition:transform .15s}.review-all[open]>summary>svg{transform:rotate(180deg)}
+.review-all>.review-comparison{margin:0 0 20px}
+.review-mobile-decision{display:none}
+@media(max-width:1000px){.review-change{padding:21px;gap:12px 15px}.review-change del{font-size:25px}.review-change strong{font-size:26px}.review-terms{gap:12px}.review-terms dd{font-size:22px}.review-terms dt{font-size:11px}.review-terms>div{padding-right:12px}}
+@media(max-width:650px){
+ .review-intro{padding:23px 20px;flex-wrap:wrap;gap:14px}.review-intro .work-eyebrow{font-size:9px;margin-bottom:10px}.review-intro h2{font-size:23px}.review-intro p{font-size:12px;line-height:1.8;margin-top:10px}.review-intro>.tag{margin:0}
+ .review-change{margin:0 16px;padding:18px 15px;gap:10px 10px;grid-template-columns:1fr 20px 1fr}.review-change>div>span{font-size:10px;margin-bottom:7px}.review-change del{font-size:21px;letter-spacing:-.5px}.review-change strong{font-size:22px;letter-spacing:-.5px}.review-change>span>svg{width:17px;height:17px}.review-change>p{font-size:11px;padding-top:11px;margin-top:3px}
+ .review-terms{grid-template-columns:.75fr .75fr 1.2fr;padding:21px 19px;gap:10px}.review-terms>div{padding-right:8px}.review-terms dt{font-size:10px;line-height:1.65}.review-terms dd{font-size:20px;margin-top:6px;letter-spacing:-.5px}.review-terms small{font-size:10px;display:block;line-height:1.7}
+ .review-all{margin:0 19px}.review-all>summary{font-size:12px;padding:15px 0}.review-all>.review-comparison{margin:0 0 17px}
+ .review-decision{padding:21px 20px}.review-decision>p{font-size:12px;line-height:1.8}.review-decision>div{margin-top:17px}.review-decision>div>.button{font-size:12px;min-height:40px}.review-decision>div>.button.text{flex-basis:100%;min-height:30px}
+ .review-mobile-decision{display:flex;align-items:center;justify-content:space-between;gap:16px;position:fixed;z-index:35;left:0;right:0;bottom:calc(62px + env(safe-area-inset-bottom));padding:12px 17px;background:#fffffffa;border-top:1px solid #dce5f2;backdrop-filter:blur(12px)}
+ .review-mobile-decision>div>span{font-size:10px;color:#7b8da6;display:block}.review-mobile-decision strong{font-size:23px;font-weight:600;line-height:1.4;letter-spacing:-.6px;display:block;color:#2b476d}.review-mobile-decision>.button{font-size:12px;min-height:42px;max-width:170px}
+ .lot-view:has(.review-mobile-decision){padding-bottom:145px}
+}
+@media(max-width:360px){.review-change{padding:16px 12px;gap:10px 7px}.review-change del{font-size:19px}.review-change strong{font-size:20px}.review-terms dd{font-size:18px}.review-terms dt{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.review-all>summary>svg{transition:none}}

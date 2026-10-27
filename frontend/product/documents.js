@@ -1,0 +1,24 @@
+import { dealDocumentRecords, dealDocumentRows } from './deal-pages.js';
+import { company, supplier, money, quote, documentStatus } from './data.js';
+import { icon, routeLink, btn, tag, esc } from './ui.js';
+
+export function documentRegister(ui,s,insideGroup=false) {
+ const signed=s.signatures[s.role],otherSigned=s.signatures[s.role==='buyer'?'supplier':'buyer'];
+ const waiting=signed&&!otherSigned,action=!signed;
+ const query=(ui.docSearch||'').trim().toLowerCase();
+ const matches=text=>!query||text.toLowerCase().includes(query);
+ const contract=(ui.docFilter==='all'||ui.docFilter==='action'&&action||ui.docFilter==='waiting'&&waiting)&&matches('Договор поставки ОП-2048/Л Бумага A4 '+company.name+' '+supplier.name);
+ const spec=ui.docFilter==='all'&&matches('Спецификация бумаги A4 характеристики 80 г/м² 500 листов '+supplier.name);
+ const extra=insideGroup?[]:dealDocumentRows(s,ui),allExtra=insideGroup?[]:dealDocumentRows(s);
+ const rows=Number(contract)+Number(spec)+extra.length;
+ return `${insideGroup?'<div class="docs-group-heading"><h2>Документы вашей компании</h2><span>Только сторонам заказа</span></div>':''}<div class="docs-heading" ${insideGroup?'hidden':''}><div><p>${s.role==='buyer'?company.name:supplier.name} · документы компании</p><h1>Документы</h1></div><span>${icon('lock',15)} Только сторонам заказа</span></div>
+ <nav class="buy-tabs" aria-label="Состояния документов" ${insideGroup?'hidden':''}>${[['all','Все документы',2+allExtra.length],['action','Требуют решения',Number(action)+allExtra.filter(d=>!d.signatures[s.role]).length],['waiting','Ожидание',Number(waiting)+allExtra.filter(d=>d.signatures[s.role]&&!d.signatures[s.role==='buyer'?'supplier':'buyer']).length]].map(([id,title,n])=>`<button data-doc-filter="${id}" class="${ui.docFilter===id?'active':''}" ${ui.docFilter===id?'aria-current="page"':''}>${title}<span>${n}</span></button>`).join('')}</nav>
+ <div class="docs-search-row"><label class="buy-search">${icon('search',18)}<input id="document-search" aria-label="Поиск документов" placeholder="Название, номер или контрагент" value="${esc(ui.docSearch||'')}"></label><span>Найдено: ${rows}</span></div>
+ <section class="docs-register" aria-label="Документы по заказу"><div class="docs-register-head"><span>Документ</span><span>Связанный заказ</span><span>Состояние</span><span></span></div>
+ ${contract?`<a href="#document" class="docs-record"><span class="docs-file" aria-hidden="true">ДОГ</span><div class="docs-record-name"><strong>Договор поставки</strong><p>ОП-2048/Л · версия 2</p><small>Обновлён 18 октября, 10:32</small></div><div class="docs-record-order"><strong>Бумага A4 · ${s.ownQuantity} пачек</strong><span>${money(quote(s).total)}</span><small>${supplier.short} → ${company.short}</small></div><div class="docs-record-state">${tag(documentStatus(s),s.signatures.buyer&&s.signatures.supplier?'success':signed?'neutral':'blue')}<span>${!s.accepted?'Сначала согласуйте условия':signed?'Ваша подпись отмечена':'Ваш экземпляр договора'}</span></div><span class="docs-open">Открыть ${icon('arrow',16)}</span></a>`:''}
+ ${spec?`<button class="docs-record" data-action="spec"><span class="docs-file spec" aria-hidden="true">СПЦ</span><div class="docs-record-name"><strong>Спецификация бумаги A4</strong><p>Характеристики и комплектация</p><small>Приложение к условиям версии 2</small></div><div class="docs-record-order"><strong>Бумага A4 · 80 г/м²</strong><span>500 листов в пачке</span><small>${supplier.short}</small></div><div class="docs-record-state">${tag('Для ознакомления')}<span>Подпись не требуется</span></div><span class="docs-open">Посмотреть ${icon('arrow',16)}</span></button>`:''}
+ ${insideGroup?'':dealDocumentRecords(s,ui)}
+ ${!rows?`<div class="docs-empty">${icon('check',24)}<h2>${query?'Документы не найдены':ui.docFilter==='action'?'Ваши документы обработаны':'Нет документов в ожидании'}</h2><p>${query?'Попробуйте другой запрос или откройте все документы.':ui.docFilter==='action'?'Сейчас нет документов, требующих вашего решения.':'Здесь появится договор, когда ваша подпись отмечена, а другая сторона ещё не подписала его.'}</p>${query?btn('Показать все документы','reset-documents','secondary'):''}</div>`:''}</section>
+ ${matches('Бумага A4')?`<div class="docs-context"><div>${icon('file',19)}<span><strong>Условия бумаги A4 · версия 2</strong><small>Поставка 29 октября. Цена и характеристики без изменений.</small></span></div>${routeLink(`История изменений ${icon('arrow',16)}`,'group/conditions')}</div>`:''}
+ ${s.role==='buyer'&&s.tasks.length?`<section class="surface task-register"><div class="section-heading"><h2>Внутренние задачи</h2>${routeLink('Все задачи','tasks')}</div>${s.tasks.map(t=>`<div><strong>${esc(t.person)}</strong><span>${esc(t.comment||'Проверить условия закупки')}</span>${tag(esc(t.status))}</div>`).join('')}</section>`:''}`;
+}
