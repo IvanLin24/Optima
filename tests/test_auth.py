@@ -11,6 +11,20 @@ def create(client, email="new@example.com"):
     return {"email": email, "challenge_id": response.json()["challenge_id"], "code": mail_token(email)}
 
 
+def test_registration_password_minimum_is_six(client, db_engine):
+    for route in ("virtual-company", "register"):
+        assert client.post(
+            f"/api/v1/auth/{route}",
+            json={"email": f"short-{route}@example.com", "password": "abc12"},
+        ).status_code == 422
+        assert client.post(
+            f"/api/v1/auth/{route}",
+            json={"email": f"valid-{route}@example.com", "password": "abc123"},
+        ).status_code == 202
+    with Session(db_engine) as db:
+        assert db.scalar(select(func.count(Company.id))) == 0
+
+
 def test_no_data_before_code_and_single_use(client, db_engine):
     body = create(client)
     with Session(db_engine) as db:
@@ -21,7 +35,9 @@ def test_no_data_before_code_and_single_use(client, db_engine):
     assert client.post("/api/v1/auth/verify-code", json=body).status_code == 400
     headers = {"Authorization": "Bearer " + response.json()["access_token"]}
     state = client.get("/api/v1/prototype/state", headers=headers)
-    assert len(state.json()["companies"]) == 8
+    assert len(state.json()["companies"]) == 0
+    assert state.json()["company"]["name"] == ""
+    assert state.json()["company"]["inn"] is None
     with Session(db_engine) as db:
         user = db.scalar(select(User))
         assert user.password_hash.startswith("$argon2id$") and user.verified
@@ -31,25 +47,33 @@ def test_no_data_before_code_and_single_use(client, db_engine):
     assert client.get("/api/v1/me", headers=headers).status_code == 401
 
 
-def test_login_only_with_email_code(client, owner, monkeypatch):
-    assert (
-        client.post(
-            "/api/v1/auth/login", json={"email": "owner@example.com", "password": "VeryStrongPass123!"}
-        ).status_code
-        == 422
-    )
-    monkeypatch.setattr("app.auth.quota", lambda *args: None)
-    result = client.post("/api/v1/auth/login", json={"email": "owner@example.com"})
-    assert result.status_code == 202
-    confirmed = client.post(
-        "/api/v1/auth/verify-code",
-        json={
-            "email": "owner@example.com",
-            "challenge_id": result.json()["challenge_id"],
-            "code": mail_token("owner@example.com"),
-        },
-    )
-    assert confirmed.status_code == 200
+def test_password_login(client, owner, monkeypatch):
+    def unexpected_mail(*args):
+        raise AssertionError("Password login must not send email")
+    monkeypatch.setattr("app.auth.send_code_email", unexpected_mail)
+    assert client.post("/api/v1/auth/login", json={"email": "owner@example.com"}).status_code == 422
+    result = client.post("/api/v1/auth/login", json={"email": "OWNER@example.com", "password": "VeryStrongPass123!"})
+    assert result.status_code == 200
+    headers = {"Authorization": "Bearer " + result.json()["access_token"]}
+    assert client.get("/api/v1/prototype/state", headers=headers).status_code == 200
+
+
+def test_wrong_password_and_unknown_email_return_same_error(client, owner):
+    errors = []
+    for email in ("owner@example.com", "missing@example.com"):
+        result = client.post("/api/v1/auth/login", json={"email": email, "password": "incorrect-password"})
+        assert result.status_code == 401
+        errors.append(result.json()["error"]["message"])
+        assert "access_token" not in result.json()
+    assert errors[0] == errors[1]
+
+
+def test_unverified_account_cannot_login_with_password(client, owner, db_engine):
+    with Session(db_engine) as db:
+        db.scalar(select(User)).verified = False
+        db.commit()
+    result = client.post("/api/v1/auth/login", json={"email": "owner@example.com", "password": "VeryStrongPass123!"})
+    assert result.status_code == 401
 
 
 def test_five_wrong_attempts_block_even_correct_code(client):
@@ -126,5 +150,5 @@ def test_no_public_auth_bypasses(client):
 def test_login_ip_limit(client, monkeypatch):
     monkeypatch.setattr("app.auth.quota", lambda *args: None)
     for i in range(30):
-        assert client.post("/api/v1/auth/login", json={"email": f"none{i}@example.com"}).status_code == 202
-    assert client.post("/api/v1/auth/login", json={"email": "none@example.com"}).status_code == 429
+        assert client.post("/api/v1/auth/login", json={"email": f"none{i}@example.com", "password": "incorrect-password"}).status_code == 401
+    assert client.post("/api/v1/auth/login", json={"email": "none@example.com", "password": "incorrect-password"}).status_code == 429

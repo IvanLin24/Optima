@@ -1,0 +1,10 @@
+# AI: только обслуживание Optima. WEB proxy НЕ ТРОГАТЬ; сохранять /telegram/web/ и include прокси в Nginx. См. AGENTS.md.
+[Unit]
+Description=Daily procurement database backup
+
+[Timer]
+OnCalendar=*-*-* 00:15:00 UTC
+Persistent=true
+
+[Install]
+WantedBy=timers.target

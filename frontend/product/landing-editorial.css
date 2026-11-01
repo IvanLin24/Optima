@@ -1,0 +1,42 @@
+/* The process is a single editorial explanation; no connector diagrams. */
+.section-kicker{font-size:10px;letter-spacing:1.5px;font-weight:600;line-height:1.8;color:#798699}
+.landing-process{max-width:1250px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:100px;margin:0 auto;padding:92px 5% 76px;align-items:start}
+.process-intro h2{font-size:39px;line-height:1.18;letter-spacing:-1.4px;margin:18px 0 0;font-weight:600}
+.process-intro .process-lead{font-size:14px;line-height:1.9;color:#748196;margin-top:23px;max-width:345px}
+.landing-process .process-path{display:grid;grid-template-columns:1fr;list-style:none;gap:32px;margin:0;padding:4px 0 0;background:none;border:0;border-radius:0}
+.landing-process .process-path li{display:block;padding:0;border:0;background:none;min-height:0}
+.landing-process .process-path h3{margin:0;font-size:20px;letter-spacing:-.45px;font-weight:600;line-height:1.4}
+.landing-process .process-path p{margin:9px 0 0;font-size:14px;line-height:1.85;color:#748196;max-width:none;min-height:0}
+.landing-questions{display:block;width:88%;max-width:850px;margin:0 auto;padding:66px 0 90px}
+.landing-questions h2{font-size:32px;line-height:1.25;letter-spacing:-1px;margin:0 0 28px;font-weight:600}
+.landing-questions details,.landing-questions details:first-child{background:#fff;border:0;border-radius:12px;margin:9px 0;padding:0 23px}
+.landing-questions summary{font-size:14px;font-weight:500;line-height:1.65;padding:20px 0;gap:22px}
+.landing-questions summary>span{width:18px;height:18px;background:none;border:0;border-radius:0;color:#8897aa}
+.landing-questions details[open] summary svg{transform:rotate(180deg)}
+.landing-questions details>p{font-size:13px;line-height:1.9;color:#778499;padding:0 37px 22px 0}
+[data-theme=dark] .optima-landing{--lp-paper:#151618;--lp-ink:#e7e7e9;--lp-blue:#8faeff;background:#151618;color:#e7e7e9}
+[data-theme=dark] .landing-art:before{background:radial-gradient(ellipse,#2e3f5940,transparent 68%)}
+[data-theme=dark] .process-intro .process-lead,[data-theme=dark] .landing-process .process-path p{color:#a3a5af}
+[data-theme=dark] .landing-questions details,[data-theme=dark] .landing-questions details:first-child{background:#202124;border:0}
+[data-theme=dark] .landing-questions summary{color:#dfdfe3}[data-theme=dark] .landing-questions details>p{color:#aaaeb8}
+[data-theme=dark] .landing-closing{background:#25272c;border:1px solid #3a3c43}
+[data-theme=dark] .landing-login,[data-theme=dark] .landing-button-outline{background:#27292e;border-color:#474a53;color:#d8dbe3}
+[data-theme=dark] :is(.landing-nav-links>nav>button,.landing-footer>nav>button,.landing-how-link){color:#b5b8c2}
+[data-theme=dark] .landing-button{background:#3067e6;color:#fff}[data-theme=dark] .landing-button:hover{background:#457af0}
+[data-theme=dark] .landing-button-outline{background:#27292e;color:#d8dbe3}
+/* Account actions share a clear row structure and equal control sizing. */
+.company-settings .company-account{display:block;margin-top:24px;padding:28px 34px;background:#fff;border:1px solid #dce5ef;border-radius:16px;color:#53708d}
+.company-account>header h2{margin:0 0 22px;font-size:19px;font-weight:600;color:#24445f}
+.company-account .account-setting-row{display:flex;align-items:center;justify-content:space-between;gap:26px;margin:0;padding:0;min-width:0}
+.company-account .account-setting-row+.account-setting-row{margin-top:25px}
+.account-setting-row>div{min-width:0}.company-account .account-setting-row span{font-size:12px;line-height:1.6;color:#8290a2}
+.company-account .account-setting-row strong{font-size:14px;line-height:1.7;color:#3e5875;font-weight:500;margin-top:5px;overflow-wrap:anywhere}
+.company-account .account-setting-row .button{min-height:40px;min-width:160px;padding:10px 16px;font-size:12px;line-height:1.5;border-radius:8px;flex-shrink:0;color:#4a6384;background:#f9fafc;border-color:#dce3ed}
+.company-account .account-setting-row .button:hover{background:#f0f4fa;border-color:#b8c9e0}
+[data-theme=dark] .company-settings .company-account{background:#202124;border-color:#35373d}
+[data-theme=dark] .company-account>header h2{color:#ededee}[data-theme=dark] .company-account .account-setting-row span{color:#a7a8af}
+[data-theme=dark] .company-account .account-setting-row strong{color:#dedfe4}
+[data-theme=dark] .company-account .account-setting-row .button{background:#292b30;border-color:#42454d;color:#d0d3dd}
+[data-theme=dark] .company-account .account-setting-row .button:hover{background:#33363d;border-color:#5b606b}
+@media(max-width:1100px){.landing-process{gap:60px}.process-intro h2{font-size:34px}}
+@media(max-width:760px){.landing-process{display:block;padding:56px 6% 42px}.process-intro h2{font-size:32px;margin-top:14px}.process-intro h2 br{display:block}.process-intro .process-lead{max-width:none;font-size:13px;margin-top:18px}.landing-process .process-path{margin-top:31px;gap:25px;padding:0}.landing-process .process-path h3{font-size:18px}.landing-process .process-path p{font-size:13px;line-height:1.85}.landing-questions{width:88%;padding:34px 0 56px}.landing-questions h2{font-size:27px;margin-bottom:23px}.landing-questions details{padding:0 18px}.landing-questions summary{font-size:13px;gap:15px;padding:18px 0}.landing-questions details>p{font-size:12px;padding:0 18px 19px 0}.company-settings .company-account{padding:24px 22px}.company-account>header h2{font-size:18px}.company-account .account-setting-row{align-items:flex-start;flex-direction:column;gap:13px}.company-account .account-setting-row+.account-setting-row{margin-top:27px}.company-account .account-setting-row .button{min-height:42px;width:100%;font-size:13px}}

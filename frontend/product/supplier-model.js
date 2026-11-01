@@ -1,7 +1,7 @@
 import { offerVersion, revisionFields, revisionChanges, sameRevisionIdentity } from './offer-revision.js';
-import { offers as seededOffers } from '../domain.js';
+import { company } from './company-context.js';
 
-export const defaultProducts=()=>[{id:'seed-paper',name:seededOffers[0].name,sku:'A4-80-500',detail:seededOffers[0].detail,category:'Офис',unit:'пачек',image:'',status:'active'}];
+export const defaultProducts=()=>[];
 export const productCategories=['Офис','Упаковка','Гигиена','Другое'];
 export const productUnits={пачек:'пачку',штук:'штуку',канистр:'канистру',рулонов:'рулон',кг:'кг'};
 export const offerFields=['current','next','retail','target','min','step','max','delivery','retailDelivery','deadlineDate','deliveryDate','region'];
@@ -85,6 +85,7 @@ export function supplierTransition(s,action){
  }
  const o=s.vendorOffers.find(o=>o.id===action.id);if(!o)throw Error('Предложение не найдено.');
  if(action.type==='vendor-publish'){
+  if(!company.name.trim())throw Error('Сначала укажите название компании в настройках.');
   if(o.status!=='draft')throw Error('Опубликовать можно только черновик.');const error=offerError(o,s.vendorProducts);if(error)throw Error(error);
   publishVersion(s,o,cleanOffer(o),cleanProduct(s.vendorProducts.find(p=>p.id===o.productId)),o.snapshot?'Предложение опубликовано повторно':'Первая публикация');return;
  }
@@ -123,10 +124,10 @@ function publishVersion(s,o,value,product,reason){
 
 export function compileOffer(o,product){
  const threshold=Math.max(o.min,Math.ceil((o.target*.1)/o.step)*o.step);
- const initial=Math.min(o.max,threshold);
+ const initial=o.min;
  const date=new Date(o.deadlineDate+'T12:00:00+03:00');
- return {id:o.id,version:offerVersion(o),revisionReason:o.revisionReason||'',revisionTime:o.revisionTime||'',name:product.name,detail:product.detail,category:product.category,unit:product.unit,priceUnit:productUnits[product.unit],image:product.image||null,supplier:'ООО «Бумага и дело»',others:0,people:0,initial,...Object.fromEntries(['current','next','retail','target','min','step','max','delivery','retailDelivery'].map(k=>[k,o[k]])),deadline:new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',timeZone:'Europe/Moscow'}).format(date)+', 18:00 МСК',days:Math.ceil((date-new Date(today()+'T12:00:00+03:00'))/86400000),region:o.region,deadlineDate:o.deadlineDate,deliveryDate:o.deliveryDate,local:true};
+ return {id:o.id,version:offerVersion(o),revisionReason:o.revisionReason||'',revisionTime:o.revisionTime||'',name:product.name,detail:product.detail,category:product.category,unit:product.unit,priceUnit:productUnits[product.unit],image:product.image||null,supplier:company.name,supplierCompanyId:company.id,comparisonSource:'supplier-quote',others:0,people:0,initial,...Object.fromEntries(['current','next','retail','target','min','step','max','delivery','retailDelivery'].map(k=>[k,o[k]])),deadline:new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'long',timeZone:'Europe/Moscow'}).format(date)+', 18:00 МСК',days:Math.ceil((date-new Date(today()+'T12:00:00+03:00'))/86400000),region:o.region,deadlineDate:o.deadlineDate,deliveryDate:o.deliveryDate,local:true};
 }
 export function catalogOffers(s){
- return [...seededOffers,...(s.vendorOffers||[]).filter(o=>o.status==='published'&&o.snapshot).map(o=>compileOffer(o,o.snapshot))];
+ return company.name.trim()?[...(s.vendorOffers||[]).filter(o=>o.status==='published'&&o.snapshot).map(o=>compileOffer(o,o.snapshot))]:[];
 }

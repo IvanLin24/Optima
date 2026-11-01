@@ -18,6 +18,12 @@ class Company(Entity, Base):
     __tablename__ = "companies"
     name: Mapped[str] = mapped_column(String(200))
     inn: Mapped[str | None] = mapped_column(String(12), nullable=True)
+    kpp: Mapped[str | None] = mapped_column(String(9), nullable=True)
+    legal_address: Mapped[str | None] = mapped_column(String(500), nullable=True)
+    contact_name: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    contact_phone: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    contact_email: Mapped[str | None] = mapped_column(String(254), nullable=True)
+    profile_revision: Mapped[int] = mapped_column(Integer, default=0, server_default="0")
     consent_version: Mapped[str | None] = mapped_column(String(50), nullable=True)
     consent_at: Mapped[int | None] = mapped_column(BigInteger, nullable=True)
     consent_user_id: Mapped[str | None] = mapped_column(String(36), nullable=True)
@@ -30,6 +36,14 @@ class User(Entity, Base):
     verified: Mapped[bool] = mapped_column(Boolean, default=False)
     company_id: Mapped[str] = mapped_column(ForeignKey("companies.id"), index=True)
     demo_group: Mapped[str | None] = mapped_column(String(36), nullable=True, index=True)
+
+
+class BusinessProfile(Entity, Base):
+    __tablename__ = "business_profiles"
+    __table_args__ = (UniqueConstraint("user_id", "role"), UniqueConstraint("company_id"))
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    company_id: Mapped[str] = mapped_column(ForeignKey("companies.id"))
+    role: Mapped[str] = mapped_column(String(20))
 
 
 class Token(Entity, Base):

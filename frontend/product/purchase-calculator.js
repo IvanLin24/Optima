@@ -1,5 +1,6 @@
 import { calculate, money } from './data.js';
 import { esc, icon, btn } from './ui.js';
+import { hasQuotedComparison } from './price-provenance.js';
 
 const count = n => new Intl.NumberFormat('ru-RU').format(n);
 
@@ -32,7 +33,7 @@ export function calculationView(o, quantity) {
  const reached=c.projected>=o.target, negative=c.saving<0, maximum=Math.max(c.total,c.baseline);
  return `<div class="calc-total"><span>Итого за ${count(quantity)} ${esc(o.unit)}</span><strong>${money(c.total)}</strong><small>${money(c.price)} за ${esc(o.priceUnit)} · доставка и сбор включены</small></div>
  <dl class="calc-cost"><div><dt>Товар · ${count(quantity)} × ${money(c.price)}</dt><dd>${money(c.goods)}</dd></div><div><dt>Доставка</dt><dd>${money(o.delivery)}</dd></div><div><dt>Комиссия · 3% экономии</dt><dd>${money(c.fee)}</dd></div></dl>
- <div class="calc-comparison ${negative?'is-negative':''}"><div><span>${negative?'Дороже отдельной покупки':'Экономия с группой'}</span><strong>${money(Math.abs(c.saving))}</strong></div><div class="calc-price-bar"><span>Отдельно</span><strong>${money(c.baseline)}</strong><i style="--bar-width:${c.baseline/maximum*100}%"></i></div><div class="calc-price-bar group"><span>С группой</span><strong>${money(c.total)}</strong><i style="--bar-width:${c.total/maximum*100}%"></i></div><p>Оба расчёта включают доставку. В групповой также включён сбор сервиса.</p></div>
+ ${hasQuotedComparison(o)?`<div class="calc-comparison ${negative?'is-negative':''}"><div><span>Разница по указанным ценам</span><strong>${money(Math.abs(c.saving))}</strong></div><p>Предварительное сравнение с ценой отдельной покупки, указанной поставщиком. Фактическая экономия по закупкам компании не подтверждена.</p></div>`:'<p class="calc-separate">Нет подтверждённых данных для сравнения с отдельной покупкой</p>'}
  <div class="calc-threshold ${reached?'is-reached':''}">${icon(reached?'check':'info',16)}<p><strong>${reached?'Оптовый порог достигнут':'До оптовой цены ещё '+count(o.target-c.projected)+' '+esc(o.unit)}</strong><span>${count(c.projected)} из ${count(o.target)} с вашим объёмом · ${money(c.price)} за ${esc(o.priceUnit)}</span></p></div>
  <span class="sr-only" role="status">Итого ${money(c.total)}, цена ${money(c.price)} за ${esc(o.priceUnit)}.</span>`;
 }

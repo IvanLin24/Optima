@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.db import get_db
 from app.errors import fail
-from app.models import Token, User, RateLimit
+from app.models import Token, User, RateLimit, BusinessProfile
 
 hasher = PasswordHasher()
 dummy_hash = hasher.hash(secrets.token_urlsafe(32))
@@ -48,7 +48,7 @@ def consume_token(db, raw, kind):
     return db.get(User, record.user_id)
 
 
-def current_user(credentials: HTTPAuthorizationCredentials | None = Depends(bearer), db: Session = Depends(get_db)):
+def current_user(request: Request, credentials: HTTPAuthorizationCredentials | None = Depends(bearer), db: Session = Depends(get_db)):
     if not credentials:
         fail(401, "UNAUTHENTICATED", "Нужен вход в аккаунт")
     record = db.scalar(
@@ -62,6 +62,15 @@ def current_user(credentials: HTTPAuthorizationCredentials | None = Depends(bear
     user = db.get(User, record.user_id) if record else None
     if not user or not user.verified:
         fail(401, "UNAUTHENTICATED", "Сессия недействительна или истекла")
+    selected = request.headers.get("X-Company-Profile")
+    if selected and selected != user.company_id:
+        access = db.scalar(select(BusinessProfile).where(BusinessProfile.user_id == user.id, BusinessProfile.company_id == selected))
+        if not access:
+            fail(403, "PROFILE_FORBIDDEN", "Этот бизнес-профиль недоступен")
+        # Request-local context. Never change User.company_id: another tab may
+        # be using a different profile with the very same account session.
+        from types import SimpleNamespace
+        return SimpleNamespace(id=user.id, email=user.email, verified=user.verified, company_id=selected, demo_group=None)
     return user
 
 

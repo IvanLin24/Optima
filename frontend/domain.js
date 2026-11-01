@@ -1,4 +1,4 @@
-// Synthetic scenario, not supplier quotes. All amounts in RUB, tax included.
+// Legacy compatibility fixtures only, not supplier quotes. Never expose as the live catalog.
 export const offers = [
   { id: 'paper', name: 'Бумага для офиса A4', detail: '80 г/м² · 500 листов · белизна 146% CIE', category: 'Офис', unit: 'пачек', priceUnit: 'пачку', min: 5, step: 5, max: 500, others: 900, target: 1000, current: 320, next: 300, retail: 360, delivery: 600, retailDelivery: 1000, people: 8, days: 3, deadline: '21 октября, 18:00 МСК', supplier: 'ООО «Бумага и дело»', image: null, initial: 100, tag: 'Закупка для офиса' },
   { id: 'boxes', name: 'Коробки из гофрокартона', detail: '400 × 300 × 300 мм · Т-23 · бурые', category: 'Упаковка', unit: 'штук', priceUnit: 'штуку', min: 50, step: 50, max: 2000, others: 3500, target: 4000, current: 49, next: 43, retail: 58, delivery: 1200, retailDelivery: 1400, people: 6, days: 5, deadline: '23 октября, 18:00 МСК', supplier: 'ООО «Форма упаковки»', image: null, initial: 500, tag: '' },

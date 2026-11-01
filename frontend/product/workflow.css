@@ -13,3 +13,10 @@
 
 .flow-mobile-total{display:none}@media(max-width:650px){.flow-mobile-total{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:0 1px 18px;color:#5c7392;font-size:12px}.flow-mobile-total>strong{font-size:24px;font-weight:600;letter-spacing:-.6px;color:#2c486e}}
 @media(max-width:650px){.flow-heading{display:block}.flow-heading>.button{margin-top:14px;max-width:none;min-height:35px}.flow-heading h1{font-size:26px}}
+/* Empty planning starts with one action; help is available where it is needed. */
+.need-empty.need-empty--focused{display:flex;align-items:center;flex-direction:column;justify-content:center;text-align:center;min-height:350px;padding:46px 25px;max-width:none}
+.need-empty--focused .need-empty-icon{width:58px;height:58px;display:grid;place-items:center;background:#edf3fc;color:#4b79b0;border-radius:16px;margin-bottom:22px}
+.need-empty.need-empty--focused h2{font-size:27px;margin:0;letter-spacing:-.7px}
+.need-empty.need-empty--focused>p{max-width:360px;font-size:14px;margin:14px 0 25px;line-height:1.8}
+.need-empty.need-empty--focused>.button{width:auto;margin:0;min-height:44px}
+.need-empty--focused>div{margin-top:17px}.need-empty--focused>div>.button{font-size:12px;color:#72869c}

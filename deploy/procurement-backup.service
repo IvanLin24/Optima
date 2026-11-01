@@ -1,0 +1,9 @@
+# AI: только обслуживание Optima. WEB proxy НЕ ТРОГАТЬ; сохранять /telegram/web/ и include прокси в Nginx. См. AGENTS.md.
+[Unit]
+Description=Back up procurement PostgreSQL
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /opt/procurement/current/deploy/backup.sh

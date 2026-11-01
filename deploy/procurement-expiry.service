@@ -1,0 +1,10 @@
+# AI: только обслуживание Optima. WEB proxy НЕ ТРОГАТЬ; сохранять /telegram/web/ и include прокси в Nginx. См. AGENTS.md.
+[Unit]
+Description=Expire pending procurement contract versions
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/procurement/current
+ExecStart=/usr/bin/docker compose -p procurement -f compose.yaml -f deploy/compose.host.yaml exec -T api python -m scripts.expire_contracts

@@ -1,0 +1,10 @@
+# AI: только обслуживание Optima. WEB proxy НЕ ТРОГАТЬ; сохранять /telegram/web/ и include прокси в Nginx. См. AGENTS.md.
+[Unit]
+Description=Reconcile procurement contract expiry every minute
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=60s
+
+[Install]
+WantedBy=timers.target

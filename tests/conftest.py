@@ -78,11 +78,10 @@ def account(client, email="owner@example.com", inn="0000000010"):
     )
     assert response.status_code == 200, response.text
     headers = {"Authorization": "Bearer " + response.json()["access_token"]}
-    if inn != "0000000010":
-        assert (
-            client.post("/api/v1/company", headers=headers, json={"name": "Тестовая компания", "inn": inn}).status_code
-            == 200
-        )
+    assert (
+        client.post("/api/v1/company", headers=headers, json={"name": "Тестовая компания", "inn": inn}).status_code
+        == 200
+    )
     return headers
 
 

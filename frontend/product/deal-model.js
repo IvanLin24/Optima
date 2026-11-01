@@ -2,8 +2,9 @@ import { defaultDealCommunication, hydrateDealCommunication, communicationTransi
 import { calculate, quantityError } from '../domain.js';
 import { catalogOffers, safeProductImage, compileOffer, offerError } from './supplier-model.js';
 import { offerVersion, pendingRevision, sameRevisionIdentity } from './offer-revision.js';
+import { company } from './company-context.js';
 
-export const ownsDeal=d=>d.offer.supplier==='ООО «Бумага и дело»';
+export const ownsDeal=d=>Boolean(company.id)&&d.offer.supplierCompanyId===company.id;
 export const visibleDeals=s=>(s.deals||[]).filter(d=>s.role==='buyer'||ownsDeal(d));
 export const dealNumber=d=>'ОП-'+d.id.replace('deal-','').slice(0,8).toUpperCase();
 export const dealStatus=d=>pendingRevision(d)?'Новые условия':openDealIssues(d).length?'Есть обращение':d.received?'Получен':d.paid?'Ожидается поставка':d.accepted?(d.signatures.buyer&&d.signatures.supplier?(d.delivery.address&&d.delivery.contact?'Готов к оплате':'Данные получения'):'Подписание договора'):'Предварительное участие';
@@ -17,6 +18,8 @@ function snapshot(o){
  if(!['min','max','step','others','target'].every(k=>Number.isSafeInteger(copy[k]))||copy.min>copy.max||copy.next>copy.current||['min','max','target'].some(k=>copy[k]%copy.step))return null;
  for(const key of ['id','name','category','unit','priceUnit','supplier','region','deadline','deadlineDate','deliveryDate'])copy[key]=text(o[key]);
  copy.version=offerVersion(o);copy.revisionReason=text(o.revisionReason,1000);copy.revisionTime=text(o.revisionTime,50);
+ copy.supplierCompanyId=text(o.supplierCompanyId,36);
+ if(o.comparisonSource==='supplier-quote')copy.comparisonSource='supplier-quote';
  copy.detail=text(o.detail,500);copy.image=safeProductImage(o.image);copy.local=o.local===true;
  if(!copy.name||!copy.supplier||!copy.unit||!copy.priceUnit)return null;
  // Seeded catalogue dates belong to the original October demonstration.

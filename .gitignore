@@ -9,6 +9,7 @@ var/
 dist/
 node_modules/
 exports/
+frontend/__review__/
 .env.*
 !.env.example
 *.sqlite

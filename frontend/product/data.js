@@ -1,7 +1,7 @@
 import { defaultProducts } from './supplier-model.js';
 import { offers, calculate, money, quantityError } from '../domain.js';
 export { offers, calculate, money, quantityError };
-export const company = { name: 'ООО «Линия»', short: 'Линия', initials: 'ИЛ' };
+export { company } from './company-context.js';
 export const supplier = { name: 'ООО «Бумага и дело»', short: 'Бумага и дело', initials: 'АБ' };
 export const demoDirectory = [];
 export const seedMessages = [
@@ -12,9 +12,9 @@ export const seedMessages = [
  {id:'e1',event:true,text:'Обновлены условия закупки',detail:'Версия 2 · поставка 27 → 29 октября',action:'conditions'},
 ];
 export const baseState = () => ({
- schema:3, role:'buyer', ownQuantity:100, joined:true, accepted:false, signatures:{buyer:false,supplier:false}, paid:false, received:false,
- saved:[], needs:[], messages:{group:[],private:[]}, drafts:{group:'',private:''}, comments:[], issues:[], tasks:[], readMessages:false,
- vendorProducts:defaultProducts(), vendorOffers:[], deals:[], notificationsRead:false, delivery:{city:'Москва',address:'',contact:'',interval:'09:00–18:00'}, events:[],
+ schema:3, workspaceVersion:2, role:'buyer', ownQuantity:100, joined:false, accepted:false, signatures:{buyer:false,supplier:false}, paid:false, received:false,
+ saved:[], needs:[], messages:{group:[],private:[]}, drafts:{group:'',private:''}, comments:[], issues:[], tasks:[], readMessages:true,
+ vendorProducts:defaultProducts(), vendorOffers:[], deals:[], notificationsRead:true, delivery:{city:'',address:'',contact:'',interval:''}, events:[],
 });
 export const quote = state => calculate(offers[0], state.ownQuantity);
 export const groupVolume = state => offers[0].others + (state.joined ? state.ownQuantity : 0);

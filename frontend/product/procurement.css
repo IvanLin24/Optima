@@ -202,3 +202,8 @@
 @media(prefers-reduced-motion:reduce){.procurement-workspace .buy-category-tabs>button,.procurement-workspace .buy-estimate-breakdown>summary>svg{transition:none}}
 @media(max-width:359px){.procurement-workspace .buy-estimate>strong{font-size:22px}}
 @media(max-width:359px){.procurement-workspace .buy-offer{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}.procurement-workspace .buy-estimate>strong{font-size:22px}}
+.buy-result-count{margin:22px 0 13px;font-size:12px;color:#6e8297}
+.buy-cost-help{max-width:850px;margin:21px 2px 0;color:#627b94;font-size:12px;line-height:1.85}
+.buy-cost-help summary{display:flex;align-items:center;gap:12px;min-height:42px;list-style:none;cursor:pointer}.buy-cost-help summary::-webkit-details-marker{display:none}.buy-cost-help[open] summary>svg{transform:rotate(180deg)}.buy-cost-help>p{max-width:700px;margin:7px 0 16px}
+
+.buy-estimate .buy-estimate-prompt{font-size:18px;line-height:1.5;letter-spacing:-.3px}

@@ -30,7 +30,7 @@ opportunities = APIRouter(tags=["Поиск закупок"])
 @router.post("/sessions", response_model=AuthResult, dependencies=[Depends(auth_rate_limit)])
 def demo_session(db: DB):
     """Create an isolated synthetic account; normal email login is not bypassed."""
-    fail(410, "CODE_REQUIRED", "Вход доступен только по коду из почты.")
+    fail(410, "CODE_REQUIRED", "Войдите в подтверждённый аккаунт по почте и паролю.")
 
 
 def make_statement(company_name, company_inn, quantity, seed=42):

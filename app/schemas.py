@@ -8,7 +8,7 @@ class Input(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
-Password = Annotated[str, Field(min_length=12, max_length=128)]
+Password = Annotated[str, Field(min_length=6, max_length=128)]
 
 
 class Register(Input):
@@ -79,6 +79,42 @@ class Consent(Input):
 class CompanyUpdate(Input):
     name: str = Field(min_length=2, max_length=200)
     inn: str = Field(pattern=r"^\d{10}(\d{2})?$")
+
+
+class CompanyProfileUpdate(Input):
+    profile_revision: int = Field(ge=0)
+    name: str = Field(min_length=2, max_length=200)
+    inn: str | None = Field(default=None, pattern=r"^\d{10}(\d{2})?$")
+    kpp: str | None = Field(default=None, pattern=r"^\d{9}$")
+    legal_address: str | None = Field(default=None, max_length=500)
+    contact_name: str | None = Field(default=None, max_length=120)
+    contact_phone: str | None = Field(default=None, max_length=40)
+    contact_email: EmailStr | None = None
+
+    @field_validator("name", mode="before")
+    @classmethod
+    def trim_name(cls, value):
+        return value.strip() if isinstance(value, str) else value
+
+    @field_validator("inn", "kpp", "legal_address", "contact_name", "contact_phone", "contact_email", mode="before")
+    @classmethod
+    def empty_is_none(cls, value):
+        return value.strip() or None if isinstance(value, str) else value
+
+
+class CompanyProfileView(BaseModel):
+    profile_revision: int
+    id: str
+    name: str
+    inn: str | None
+    kpp: str | None
+    legal_address: str | None
+    contact_name: str | None
+    contact_phone: str | None
+    contact_email: str | None
+    login_email: str
+    can_edit_requisites: bool
+    needs_setup: bool
 
 
 class Window(Input):

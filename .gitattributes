@@ -1,0 +1,2 @@
+# Keep the release manifest verifiable on Windows and macOS: preserve file bytes.
+* -text

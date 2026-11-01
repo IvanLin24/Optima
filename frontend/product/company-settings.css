@@ -1,0 +1,29 @@
+/* Company settings: one form, private account access below it. */
+.company-settings{max-width:940px;min-width:0;color:#24445f}
+.company-settings-form{background:#fff;border:1px solid #dce5ef;border-radius:16px;overflow:hidden}
+.company-settings-section{padding:30px 34px;border-bottom:1px solid #e7edf4}
+.company-settings-section>header{display:flex;align-items:flex-start;gap:14px;margin-bottom:25px}
+.company-settings-section>header>span{display:grid;place-items:center;flex:0 0 33px;height:33px;border-radius:9px;background:#edf3fc;color:#4b73a4;font-size:11px;font-variant-numeric:tabular-nums}
+.company-settings-section h2{font-size:19px;font-weight:600;letter-spacing:-.4px;line-height:1.5;margin:0}
+.company-settings-section header p{font-size:12px;line-height:1.8;color:#7a8b9c;margin-top:4px}
+.company-fields{display:grid;grid-template-columns:1fr 1fr;gap:23px 24px}
+.company-field{min-width:0;display:grid;align-content:start;gap:8px}.company-field--full{grid-column:1/-1}
+.company-field label{font-size:13px;font-weight:500;color:#44617d}.company-field label>span{color:#1558e9}
+.company-field input{width:100%;min-width:0;min-height:49px;border:1px solid #ccd9e6;border-radius:9px;background:#fff;padding:12px 14px;font-size:14px;line-height:1.5;color:#24445f;transition:border-color .16s,box-shadow .16s}
+.company-field input::placeholder{color:#99a7b5}.company-field input:focus{outline:none;border-color:#1558e9;box-shadow:0 0 0 3px #1558e912}
+.company-field input[readonly]{background:#f6f8fb;color:#778a9d;cursor:default}.company-field small{color:#8594a3;font-size:11px;line-height:1.65}
+.company-settings-notice{padding:13px 15px;margin:0 0 24px;background:#f4f7fc;border:1px solid #e0e8f4;border-radius:8px;color:#6b7f94;font-size:12px;line-height:1.8}
+.company-settings-actions{padding:23px 34px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:#fcfdff}
+.company-settings-feedback{font-size:12px;line-height:1.8;color:#7a8c9c}.company-settings-actions .button{min-height:44px;border-radius:9px;padding:11px 20px;font-size:13px;flex-shrink:0}
+.company-settings-save-error{margin:0;padding:0 34px 25px;color:#b33f4c;font-size:13px;line-height:1.8}.company-settings-save-error[hidden]{display:none}
+.company-account{display:flex;align-items:center;gap:25px;padding:25px 2px 0;color:#53708d}.company-account>div:first-child{margin-right:auto;min-width:0}
+.company-account h2{font-size:16px;font-weight:600;line-height:1.6;margin-bottom:10px;color:#375773}.company-account span{display:block;font-size:11px;color:#8a98a7;line-height:1.7}
+.company-account strong{display:block;font-size:13px;font-weight:500;overflow-wrap:anywhere;line-height:1.8;margin-top:3px;color:#4b6a87}
+.company-account-role>div{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap}.company-account-role .button{min-height:36px;font-size:12px;padding:7px 11px;border-radius:7px}.company-account>.button{font-size:12px;min-height:40px;display:flex;align-items:center;gap:8px}
+.company-settings-loading,.company-settings-error{max-width:940px;padding:45px 34px;background:#fff;border:1px solid #dce5ef;border-radius:16px;color:#71869b;font-size:14px;line-height:1.8}
+.company-settings-error h2{font-size:22px;margin-bottom:12px;color:#355673}.company-settings-error>.button{margin-top:20px}
+.company-settings :where(button,a):focus-visible{outline:2px solid #1558e9;outline-offset:3px}
+@media(max-width:760px){.company-settings-section{padding:24px 22px}.company-settings-section>header{gap:11px;margin-bottom:23px}.company-settings-section h2{font-size:18px}.company-fields{grid-template-columns:1fr;gap:20px}.company-field input{font-size:16px}.company-settings-actions{padding:20px 22px;align-items:stretch;flex-direction:column;gap:14px}.company-settings-actions>.button{width:100%}.company-settings-save-error{padding:0 22px 23px}.company-account{align-items:flex-start;flex-wrap:wrap;gap:20px;padding-top:25px}.company-account>div:first-child{flex-basis:100%}.company-account>.button{margin-left:auto;align-self:flex-end}.company-settings-section header p{font-size:11px}.company-settings-section>header>span{flex-basis:29px;height:29px}.company-settings-loading,.company-settings-error{padding:30px 22px}}
+@media(prefers-reduced-motion:reduce){.company-field input{transition:none}}
+
+.company-settings-save-error>.button{display:block;margin-top:8px;color:#1558e9;padding-left:0}.company-account-role .selected{color:#1558e9;background:#eef4ff;border-color:#c5d8f7}

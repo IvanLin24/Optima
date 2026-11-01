@@ -99,12 +99,14 @@ def consent_terms() -> dict:
 
 @router.post("/company", tags=["Профиль"], response_model=CompanyView)
 def update_company(body: CompanyUpdate, db: DB, user: Actor) -> dict:
+    from app.company_profile import identity_locked
     company = db.scalar(select(Company).where(Company.id == user.company_id).with_for_update())
     has_history = db.scalar(select(StatementImport.id).where(StatementImport.company_id == company.id).limit(1))
     has_contracts = db.scalar(select(Participant.id).where(Participant.company_id == company.id).limit(1))
-    if has_history or has_contracts or user.demo_group:
+    if has_history or has_contracts or user.demo_group or identity_locked(db, user):
         fail(409, "PROFILE_LOCKED", "После начала анализа реквизиты компании нельзя менять в MVP")
     company.name, company.inn = body.name, body.inn
+    company.profile_revision += 1
     db.commit()
     return {"id": company.id, "name": company.name, "inn": company.inn}
 

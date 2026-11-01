@@ -4,9 +4,11 @@
 
 ## Вход и виртуальная компания
 
-1. `POST /auth/virtual-company` или `/auth/register`: `{email, password}`. Пароль 12–128 символов. Компания и её данные создаются **после кода**, не после первого запроса.
-2. `POST /auth/login` или `/auth/request-code`: `{email}`. Вход по паролю отсутствует.
-3. Ответ 202: `{challenge_id, expires_in: 600, resend_after: 60, message}`. Не раскрывает наличие аккаунта.
+Настройки компании: owner-only `GET/PUT /company/profile`, отдельная ревизия профиля и контактная почта, не меняющая логин. Поля и ограничения: [COMPANY_SETTINGS.md](COMPANY_SETTINGS.md).
+
+1. `POST /auth/virtual-company` или `/auth/register`: `{email, password}`. Пароль 6–128 символов. Компания и её данные создаются **после кода**, не после первого запроса.
+2. `POST /auth/login`: `{email, password}`. Для подтверждённого аккаунта возвращает 200 и `{access_token, token_type, expires_in}`. Неверная почта, неверный пароль и неподтверждённый аккаунт возвращают одинаковую ошибку 401. Запрос ограничен 30 попытками на IP за 15 минут. `/auth/request-code` с `{email}` сохраняется для совместимости почтового сценария.
+3. Ответ регистрации или запроса кода — 202: `{challenge_id, expires_in: 600, resend_after: 60, message}`. Не раскрывает наличие аккаунта.
 4. `POST /auth/verify-code`: `{email, challenge_id, code: "123456"}`. Ответ: `{access_token, token_type: "bearer", expires_in: 3600}`.
 5. `POST /auth/resend-code`: `{email, challenge_id}`. Возвращает новое задание. Старый код недействителен. Работает и до создания компании.
 6. `POST /auth/logout`: заголовок `Authorization: Bearer <access_token>`.

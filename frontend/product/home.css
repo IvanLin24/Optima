@@ -1,4 +1,13 @@
 /* Company workbench. List and selected context share a single working surface. */
+.wb-workspace.wb-workspace--single{grid-template-columns:minmax(0,1fr)}
+.wb-pulse{display:flex;align-items:center;gap:8px;margin:0 0 22px;flex-wrap:wrap}
+.wb-pulse button{display:flex;align-items:center;gap:9px;min-height:38px;border:1px solid #dce5ee;background:#fff;border-radius:9px;padding:7px 12px;font-size:12px;color:#647b91;transition:background .18s,border-color .18s}
+.wb-pulse button[aria-pressed=true]{background:#eaf1fd;border-color:#bbcfef;color:#225eae}.wb-pulse span{font-variant-numeric:tabular-nums;font-weight:600;color:#214e7d}
+.wb-cost-details{border-top:1px solid #cddff5;margin-top:17px}.wb-cost-details summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:42px;cursor:pointer;list-style:none;font-size:12px;color:#3b689c}.wb-cost-details summary::-webkit-details-marker{display:none}.wb-cost-details[open] summary>svg{transform:rotate(180deg)}
+.wb-related{border-top:1px solid #e5ebf2;margin:0 29px;padding:8px 0;display:flex;justify-content:space-between;gap:12px}
+.wb-related a{display:flex;align-items:center;gap:10px;min-height:46px;font-size:12px;color:#647f99}.wb-related a:hover{color:#1558e9}.wb-related strong{font-weight:500;color:#365b7c}.wb-related b{font-size:10px;font-weight:500;background:#e8f0fe;color:#1558e9;border-radius:5px;padding:3px 6px;margin-left:5px}
+@media(max-width:700px){.wb-related{margin:0 20px;flex-direction:column;gap:0;padding:6px 0}.wb-related a{justify-content:flex-start}.wb-related a>svg:last-child{margin-left:auto}.wb-pulse{margin-bottom:18px}.wb-pulse button{font-size:11px;padding:7px 10px}}
+:where(.wb-pulse button,.wb-cost-details summary,.wb-related a):focus-visible{outline:2px solid #1558e9;outline-offset:3px;border-radius:5px}
 .workbench{--wb-ink:#173b55;--wb-text:#526e86;--wb-line:#dce5ee;--wb-blue:#1b60d7;min-width:0}
 .wb-heading{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:20px}
 .wb-heading>div{min-width:0}.wb-heading p{display:flex;gap:15px;align-items:center;font-size:13px;color:#59718a;line-height:1.7}
@@ -184,3 +193,10 @@
 /* Keyboard feedback follows the same controls as pointer feedback. */
 :where(.wb-metric,.wb-panels>button,.wb-filters>button,.wb-queue-add,.wb-open-order,.wb-queue-discover,.wb-planning>a):focus-visible{outline:2px solid #2766cf;outline-offset:-3px;border-radius:7px}
 @media(prefers-reduced-motion:reduce){.workbench button,.workbench a{transition:none}}
+
+/* Keep the compact finance panel usable at every breakpoint. */
+.workbench .wb-money{display:block;order:0}
+.wb-money .wb-cost-details .wb-cost{display:grid;grid-column:auto;grid-row:auto;border:0;padding:0;margin:8px 0 14px;gap:10px}
+@media(max-width:700px){.workbench .wb-heading{display:block}.workbench .wb-heading-actions{margin-top:18px;flex-wrap:wrap}.workbench .wb-heading-actions>.button.primary{font-size:12px;width:auto;height:auto;min-height:42px;padding:11px 14px;margin-top:0}.workbench .wb-heading-actions>.button.secondary{display:inline-flex;font-size:12px}.wb-related a{min-height:44px}.wb-money .wb-cost-details{margin-top:12px}.wb-money .wb-cost-details summary{font-size:12px}}
+
+.wb-empty-actions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:23px}.wb-empty-actions>.button{min-height:44px}

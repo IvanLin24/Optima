@@ -1,4 +1,4 @@
-# AI: вход только по почтовому коду; не обходить подтверждение и не выводить OTP/секреты. См. ../AGENTS.md.
+# AI: вход по паролю только после подтверждения почты; не выводить OTP/секреты. См. ../AGENTS.md.
 import hashlib
 import hmac
 import secrets
@@ -14,10 +14,10 @@ from app.errors import fail
 from app.mail import send_code_email
 from app.models import Company, User, Token, EmailChallenge, RateLimit
 from app.prototype import ensure_workspace
-from app.schemas import VirtualCompanyInput, CodeVerify, CodeResend, EmailInput, ChallengeView, AuthResult, Message
-from app.security import hasher, auth_rate_limit, auth_response, current_user, bearer, digest
+from app.schemas import VirtualCompanyInput, CodeVerify, CodeResend, EmailInput, Login, ChallengeView, AuthResult, Message
+from app.security import hasher, password_matches, dummy_hash, auth_rate_limit, auth_response, current_user, bearer, digest
 
-router = APIRouter(prefix="/auth", tags=["Вход по коду"], dependencies=[Depends(auth_rate_limit)])
+router = APIRouter(prefix="/auth", tags=["Вход и регистрация"], dependencies=[Depends(auth_rate_limit)])
 
 
 def code_hash(challenge_id, code):
@@ -91,9 +91,14 @@ def register(body: VirtualCompanyInput, db: Session = Depends(get_db)):
     return start_challenge(db, body.email, body.password)
 
 
-@router.post("/login", response_model=ChallengeView, status_code=202)
-def login(body: EmailInput, db: Session = Depends(get_db)):
-    return start_challenge(db, body.email)
+@router.post("/login", response_model=AuthResult)
+def login(body: Login, db: Session = Depends(get_db)):
+    email = str(body.email).strip().lower()
+    user = db.scalar(select(User).where(User.email == email))
+    valid = password_matches(body.password, user.password_hash if user else dummy_hash)
+    if not user or not valid or not user.verified:
+        fail(401, "INVALID_CREDENTIALS", "Неверная почта или пароль")
+    return auth_response(db, user)
 
 
 @router.post("/request-code", response_model=ChallengeView, status_code=202)
@@ -127,8 +132,7 @@ def verify_code(body: CodeVerify, db: Session = Depends(get_db)):
     if not user:
         if item.purpose != "create" or not item.password_hash:
             fail(400, "INVALID_CODE", "Создайте виртуальную компанию.")
-        suffix = item.id.replace("-", "")[:4].upper()
-        company = Company(name=f"ООО «Линия {suffix}»", inn="0000000010")
+        company = Company(name="", inn=None)
         db.add(company)
         db.flush()
         user = User(email=email, password_hash=item.password_hash, company_id=company.id, verified=True)

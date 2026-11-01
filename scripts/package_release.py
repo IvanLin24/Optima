@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import re
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 
@@ -9,9 +10,13 @@ from zipfile import ZipFile, ZIP_DEFLATED
 def main():
     root = Path(__file__).resolve().parents[1]
     files = []
+    active_assets = set(re.findall(r"/assets/(app-[a-f0-9]+\.(?:js|css))", (root / "frontend/index.html").read_text(encoding="utf-8")))
+    assert len(active_assets) == 2, "Build frontend before packaging"
     for folder in ("app", "scripts", "migrations", "docs", "tests", "sample_data", "deploy", "frontend"):
         for file in (root / folder).rglob("*"):
-            if file.is_file() and "__pycache__" not in file.parts and 'node_modules' not in file.parts and file.suffix != ".pyc":
+            if file.is_file() and "__pycache__" not in file.parts and 'node_modules' not in file.parts and '__review__' not in file.parts and file.suffix != ".pyc":
+                if file.parent == root / "frontend/assets" and file.name.startswith("app-") and file.name not in active_assets:
+                    continue
                 files.append(file)
     for name in (
         "README.md",
@@ -21,6 +26,7 @@ def main():
         "pyproject.toml",
         ".env.example",
         ".gitignore",
+        ".gitattributes",
         ".dockerignore",
         "Dockerfile",
         "compose.yaml",

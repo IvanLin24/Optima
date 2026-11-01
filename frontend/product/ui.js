@@ -1,6 +1,7 @@
 import { safeProductImage } from './supplier-model.js';
 export const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const paths={
+ settings:'<path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="var(--settings-fill, #fafbfe)"/><circle cx="15" cy="17" r="3" fill="var(--settings-fill, #fafbfe)"/>',
  sort:'<path d="M4 6h10M4 11h7M4 16h4M18 5v15m-3-3 3 3 3-3"/>',
  download:'<path d="M12 3v13m-5-5 5 5 5-5M4 17v4h16v-4"/>',
  home:'<path d="m3 10 9-7 9 7v11H3V10Z"/><path d="M9 21v-8h6v8"/>',

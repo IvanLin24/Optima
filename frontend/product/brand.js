@@ -1,0 +1,2 @@
+// One vector silhouette for the public page, auth and workspace.
+export function brandMark(){return '<span class="brand-mark brand-mark-weave" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="currentColor"><g transform="translate(32 32) rotate(45)"><path d="M-14-22H7V-9H-22V-14Z"/><path d="M-14-22H7V-9H-22V-14Z" transform="rotate(90)"/><path d="M-14-22H7V-9H-22V-14Z" transform="rotate(180)"/><path d="M-14-22H7V-9H-22V-14Z" transform="rotate(270)"/></g></svg></span>';}

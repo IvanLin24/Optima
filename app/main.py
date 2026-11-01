@@ -15,6 +15,8 @@ from app.demo import router as demo_router, opportunities
 from app.schemas import ErrorEnvelope
 from app.prototype import router as prototype_router
 from app.scene import router as scene_router
+from app.company_profile import router as company_profile_router
+from app.business_profiles import router as business_profiles_router
 
 
 @asynccontextmanager
@@ -36,7 +38,7 @@ app.add_middleware(
     allow_origins=settings().cors_origins,
     allow_credentials=False,
     allow_methods=["GET", "POST", "PUT"],
-    allow_headers=["Authorization", "Content-Type", "X-Request-ID"],
+    allow_headers=["Authorization", "Content-Type", "X-Request-ID", "X-Company-Profile"],
     expose_headers=["X-Request-ID", "Content-Disposition"],
 )
 
@@ -95,5 +97,5 @@ def ready() -> dict:
     return {"status": "ready"}
 
 
-for router in (auth_router, api_router, opportunities, demo_router, prototype_router, scene_router):
+for router in (auth_router, api_router, opportunities, demo_router, prototype_router, scene_router, company_profile_router, business_profiles_router):
     app.include_router(router, prefix="/api/v1")

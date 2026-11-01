@@ -1,9 +1,13 @@
 const KEY = 'optima.api.token.v1';
+const PROFILE_KEY='optima.api.profile.v1';
+export function getProfile(){return sessionStorage.getItem(PROFILE_KEY)||'';}
+export function setProfile(value){if(value)sessionStorage.setItem(PROFILE_KEY,value);else sessionStorage.removeItem(PROFILE_KEY);}
 export function getToken() { return sessionStorage.getItem(KEY) || ''; }
-export function setToken(value) { if (value) sessionStorage.setItem(KEY, value); else sessionStorage.removeItem(KEY); }
-export async function request(path, {method = 'GET', body, token = getToken(), blob = false} = {}) {
+export function setToken(value) { setProfile('');if (value) sessionStorage.setItem(KEY, value); else sessionStorage.removeItem(KEY); }
+export async function request(path, {method = 'GET', body, token = getToken(), blob = false, companyId = getProfile()} = {}) {
   const headers = {};
   if (token) headers.Authorization = `Bearer ${token}`;
+  if(token&&companyId)headers['X-Company-Profile']=companyId;
   if (body && !(body instanceof FormData)) headers['Content-Type'] = 'application/json';
   const response = await fetch('/api/v1' + path, {method, headers,
     body: body instanceof FormData ? body : body === undefined ? undefined : JSON.stringify(body)});

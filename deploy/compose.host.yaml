@@ -1,0 +1,14 @@
+# AI: только обслуживание Optima. WEB proxy НЕ ТРОГАТЬ; сохранять /telegram/web/ и include прокси в Nginx. См. AGENTS.md.
+services:
+  db:
+    restart: unless-stopped
+    command: [postgres, -c, shared_buffers=64MB, -c, max_connections=30]
+    mem_limit: 256m
+  api:
+    restart: unless-stopped
+    mem_limit: 384m
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
